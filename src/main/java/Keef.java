@@ -20,70 +20,100 @@ public class Keef {
 
             try {
                 userInput = sc.nextLine();
-            } catch (Exception e) {
-                // Input ended, stop program
-                break;
+
+                // Get user input and vary response according to it
+                String[] parts = userInput.trim().split(" ", 2);
+                String command = parts[0];
+                String arguments = parts.length > 1 ? parts[1] : "";
+
+                drawHorizontalLine();
+                System.out.print("Keef: ");
+
+                switch (command) {
+                    case "bye":
+                        // Bye greeting
+                        System.out.println("See ya soon! ~");
+                        drawHorizontalLine();
+                        return;
+                    case "list":
+                        // List out all items stored
+                        System.out.println("Here are the tasks in your list:");
+                        printTasks(tasks);
+                        drawHorizontalLine();
+                        continue;
+                    case "mark":
+                    case "unmark":
+                        // Get the task number to be marked / unmarked
+                        int taskIndex = Integer.parseInt(arguments);
+                        // Error Handling
+                        boolean outOfBounds = taskIndex <= 0 || taskIndex - 1 >= tasks.size();
+                        if (outOfBounds) {
+                            throw new KeefException("Uhm bro, you " + (tasks.isEmpty() ? "" : "only ") + "have " + tasks.size() + " task(s) in your list.");
+                        }
+                        Task selectedTask = tasks.get(taskIndex - 1);
+
+                        // Mark a task as done or undone
+                        boolean done = command.equals("mark");
+                        if (done) {
+                            selectedTask.markAsDone();
+                        } else {
+                            selectedTask.markAsUndone();
+                        }
+
+                        System.out.println("OK! I've " + (done ? "marked" : "unmarked") + " this task:");
+                        System.out.println(selectedTask);
+                        drawHorizontalLine();
+                        continue;
+                    case "todo":
+                        // Error Handling
+                        if (arguments.isEmpty()) {
+                            throw new KeefException("Bro, you left out what exactly you wanted to do! Add something!");
+                        }
+                        // Add new ToDo Task
+                        Task new_todo = new ToDo(arguments);
+                        tasks.add(new_todo);
+                        printAddMessage(new_todo, tasks.size());
+                        continue;
+                    case "deadline":
+                        // Error Handling
+                        if (!arguments.contains("/by")) {
+                            throw new KeefException("Bro, you must include /by <date>");
+                        }
+                        String[] deadlineParts = arguments.split("/by", 2);
+                        if (deadlineParts[0].isEmpty() || deadlineParts[1].isEmpty()) {
+                            throw new KeefException("Bro, the description and date can't be empty!");
+                        }
+                        // Add new Deadline Task
+                        Task deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
+                        tasks.add(deadline);
+                        printAddMessage(deadline, tasks.size());
+                        continue;
+                    case "event":
+                        // Error Handling
+                        if (!arguments.contains("/from") || !arguments.contains("/to")) {
+                            throw new KeefException("Bro, you must include /from <start> and /to <end>.");
+                        }
+                        String[] eventParts = arguments.split("/from|/to");
+
+                        if (eventParts.length < 3 ||
+                                eventParts[0].isEmpty() ||
+                                eventParts[1].isEmpty() ||
+                                eventParts[2].isEmpty()) {
+                            throw new KeefException("Bro, you the event description, start, and end cannot be empty!");
+                        }
+                        // Add new Event Task
+                        Task event = new Event(eventParts[0], eventParts[1], eventParts[2]);
+                        tasks.add(event);
+                        printAddMessage(event, tasks.size());
+                        continue;
+                    default:
+                        // Invalid command
+                        throw new KeefException("Huh, what do you mean?");
+                }
             }
-
-            // Get user input and vary response according to it
-            String[] parts = userInput.split(" ", 2);
-            String command = parts[0];
-            String arguments  = parts.length > 1 ? parts[1] : "";
-
-            drawHorizontalLine();
-            System.out.print("Keef: ");
-
-            switch (command) {
-                case "bye":
-                    // Bye greeting
-                    System.out.println("See ya soon! ~");
-                    drawHorizontalLine();
-                    return;
-                case "list":
-                    // List out all items stored
-                    System.out.println("Here are the tasks in your list:");
-                    printTasks(tasks);
-                    drawHorizontalLine();
-                    continue;
-                case "mark":
-                case "unmark":
-                    // Get the task number to be marked / unmarked
-                    int taskIndex = Integer.parseInt(arguments);
-                    Task selectedTask = tasks.get(taskIndex - 1);
-
-                    // Mark a task as done or undone
-                    boolean done = command.equals("mark");
-                    if (done) {
-                        selectedTask.markAsDone();
-                    } else {
-                        selectedTask.markAsUndone();
-                    }
-
-                    System.out.println("OK! I've marked this task as " + (done ? "done:" : "not done yet:"));
-                    System.out.println(selectedTask);
-                    drawHorizontalLine();
-                    continue;
-                case "todo":
-                    Task new_todo = new ToDo(arguments);
-                    tasks.add(new_todo);
-                    printAddMessage(new_todo, tasks.size());
-                    continue;
-                case "deadline":
-                    String[] deadlineParts = arguments.split("/by");
-                    Task deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
-                    tasks.add(deadline);
-                    printAddMessage(deadline, tasks.size());
-                    continue;
-                case "event":
-                    String[] eventParts = arguments.split("/from|/to");
-                    Task event = new Event(eventParts[0], eventParts[1], eventParts[2]);
-                    tasks.add(event);
-                    printAddMessage(event, tasks.size());
-                    continue;
-                default:
-                    // Invalid command
-                    System.out.println("Huh, what do you mean?");
-                    drawHorizontalLine();
+            catch (KeefException e) {
+                System.out.println(e.getMessage());
+                drawHorizontalLine();
             }
         }
     }
