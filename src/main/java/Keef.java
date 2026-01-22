@@ -25,27 +25,31 @@ public class Keef {
 
                 // Get user input and vary response according to it
                 String[] parts = userInput.trim().split(" ", 2);
-                String command = parts[0];
+                CommandType commandType = CommandType.fromString(parts[0]);
                 String arguments = parts.length > 1 ? parts[1] : "";
 
                 drawHorizontalLine();
                 System.out.print("Keef: ");
 
-                switch (command) {
-                    case "bye":
+                switch (commandType) {
+                    case BYE:
                         // Bye greeting
                         System.out.println("See ya soon! ~");
                         drawHorizontalLine();
                         return;
-                    case "list":
+                    case LIST:
                         // List out all items stored
-                        System.out.println("Here are the tasks in your list:");
-                        printTasks(tasks);
+                        if (tasks.isEmpty()) {
+                            System.out.println("You don't have any tasks yet. Start adding!");
+                        } else {
+                            System.out.println("Here are the tasks in your list:");
+                            printTasks(tasks);
+                        }
                         drawHorizontalLine();
                         continue;
-                    case "mark":
-                    case "unmark":
-                    case "delete":
+                    case MARK:
+                    case UNMARK:
+                    case DELETE:
                         // Get the task number to be marked / unmarked / deleted
                         int taskIndex = Integer.parseInt(arguments);
                         // Error Handling
@@ -56,13 +60,13 @@ public class Keef {
                         Task selectedTask = tasks.get(taskIndex - 1);
 
                         // Mark / Unmark / Delete a Task
-                        if (command.equals("mark")) {
-                            if (selectedTask.isDone) {
+                        if (commandType == CommandType.MARK) {
+                            if (selectedTask.isDone()) {
                                 throw new KeefException("You are already done with this task!");
                             }
                             selectedTask.markAsDone();
-                        } else if (command.equals("unmark")) {
-                            if (!selectedTask.isDone) {
+                        } else if (commandType == CommandType.UNMARK) {
+                            if (!selectedTask.isDone()) {
                                 throw new KeefException("You didn't mark this task to begin with!");
                             }
                             selectedTask.markAsUndone();
@@ -70,9 +74,9 @@ public class Keef {
                             tasks.remove(selectedTask);
                         }
 
-                        printMessage(selectedTask, tasks.size(), command);
+                        printMessage(selectedTask, tasks.size(), commandType);
                         continue;
-                    case "todo":
+                    case TODO:
                         // Error Handling
                         if (arguments.isEmpty()) {
                             throw new KeefException("Bro, you left out what exactly you wanted to do! Add something!");
@@ -81,9 +85,9 @@ public class Keef {
                         // Add new ToDo Task
                         Task new_todo = new ToDo(arguments);
                         tasks.add(new_todo);
-                        printMessage(new_todo, tasks.size(), "add");
+                        printMessage(new_todo, tasks.size(), CommandType.ADD);
                         continue;
-                    case "deadline":
+                    case DEADLINE:
                         // Error Handling
                         if (!arguments.contains("/by")) {
                             throw new KeefException("Bro, you must include /by <date>");
@@ -96,9 +100,9 @@ public class Keef {
                         // Add new Deadline Task
                         Task deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
                         tasks.add(deadline);
-                        printMessage(deadline, tasks.size(), "add");
+                        printMessage(deadline, tasks.size(), CommandType.ADD);
                         continue;
-                    case "event":
+                    case EVENT:
                         // Error Handling
                         if (!arguments.contains("/from") || !arguments.contains("/to")) {
                             throw new KeefException("Bro, you must include /from <start> and /to <end>.");
@@ -115,11 +119,10 @@ public class Keef {
                         // Add new Event Task
                         Task event = new Event(eventParts[0], eventParts[1], eventParts[2]);
                         tasks.add(event);
-                        printMessage(event, tasks.size(), "add");
+                        printMessage(event, tasks.size(), CommandType.ADD);
                         continue;
                     default:
-                        // Invalid command
-                        throw new KeefException("Huh, what do you mean?");
+                        // Shouldn't reach here
                 }
             }
             catch (KeefException e) {
@@ -143,12 +146,12 @@ public class Keef {
         }
     }
     
-    public static void printMessage(Task task, int size, String type) {
+    public static void printMessage(Task task, int size, CommandType type) {
         String pastTenseType = switch (type) {
-            case "add" -> "added";
-            case "delete" -> "deleted";
-            case "mark" -> "marked";
-            case "unmark" -> "unmarked";
+            case ADD -> "added";
+            case DELETE -> "deleted";
+            case MARK -> "marked";
+            case UNMARK -> "unmarked";
             default -> "";
         };
         System.out.println("Got it. I've " + pastTenseType + " this task:");
