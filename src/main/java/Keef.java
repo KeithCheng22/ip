@@ -7,7 +7,7 @@ public class Keef {
         // Scanner object to read input from the keyboard
         Scanner sc = new Scanner(System.in);
         String user_input = "";
-        List<String> items = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
 
         // Hello greeting
         draw_horizontal_line();
@@ -20,7 +20,10 @@ public class Keef {
 
             // Get user input and vary response according to it
             user_input = sc.nextLine();
-            switch (user_input) {
+            String[] parts = user_input.split(" ");
+            String command = parts[0];
+
+            switch (command) {
                 case "bye":
                     // Bye greeting
                     draw_horizontal_line();
@@ -31,15 +34,39 @@ public class Keef {
                 case "list":
                     // List out all items stored
                     draw_horizontal_line();
-                    print_items(items);
+                    System.out.println("Here are the tasks in your list:");
+                    print_tasks(tasks);
                     draw_horizontal_line();
+                    continue;
+                case "mark":
+                case "unmark":
+                    // Get the task number to be marked / unmarked
+                    int task_index = Integer.parseInt(parts[1]);
+                    Task selected_task = tasks.get(task_index - 1);
+
+                    // Mark a task as done or undone
+                    if (command.equals("mark")) {
+                        selected_task.markAsDone();
+                        draw_horizontal_line();
+                        System.out.println("Nice! I've marked this task as done:");
+                        System.out.println(selected_task);
+                        draw_horizontal_line();
+                    } else {
+                        selected_task.markAsUndone();
+                        draw_horizontal_line();
+                        System.out.println("OK! I've marked this task as not done yet:");
+                        System.out.println(selected_task);
+                        draw_horizontal_line();
+                    }
+
                     continue;
                 default:
                     // Add user_input to items list
                     draw_horizontal_line();
                     System.out.print("Keef: ");
-                    items.add(user_input);
-                    System.out.println("Added" + " " + "'" + user_input + "'");
+                    Task new_task = new Task(user_input);
+                    tasks.add(new_task);
+                    System.out.println("Added" + " " + "'" + new_task.description + "'");
                     draw_horizontal_line();
                     continue;
             }
@@ -56,9 +83,9 @@ public class Keef {
         System.out.println();
     }
 
-    public static void print_items(List<String> items) {
-        for (int i = 0; i < items.size(); i++) {
-            System.out.println(i+1 + "." + " " + items.get(i));
+    public static void print_tasks(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println(i+1 + "." + " " + tasks.get(i));
         }
     }
 }
