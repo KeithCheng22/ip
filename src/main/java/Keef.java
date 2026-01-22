@@ -7,6 +7,8 @@ public class Keef {
         // Scanner object to read input from the keyboard
         Scanner sc = new Scanner(System.in);
         String userInput = "";
+
+        // ArrayList to store userInput
         List<Task> tasks = new ArrayList<>();
 
         // Hello greeting
@@ -43,7 +45,8 @@ public class Keef {
                         continue;
                     case "mark":
                     case "unmark":
-                        // Get the task number to be marked / unmarked
+                    case "delete":
+                        // Get the task number to be marked / unmarked / deleted
                         int taskIndex = Integer.parseInt(arguments);
                         // Error Handling
                         boolean outOfBounds = taskIndex <= 0 || taskIndex - 1 >= tasks.size();
@@ -52,27 +55,33 @@ public class Keef {
                         }
                         Task selectedTask = tasks.get(taskIndex - 1);
 
-                        // Mark a task as done or undone
-                        boolean done = command.equals("mark");
-                        if (done) {
+                        // Mark / Unmark / Delete a Task
+                        if (command.equals("mark")) {
+                            if (selectedTask.isDone) {
+                                throw new KeefException("You are already done with this task!");
+                            }
                             selectedTask.markAsDone();
-                        } else {
+                        } else if (command.equals("unmark")) {
+                            if (!selectedTask.isDone) {
+                                throw new KeefException("You didn't mark this task to begin with!");
+                            }
                             selectedTask.markAsUndone();
+                        } else {
+                            tasks.remove(selectedTask);
                         }
 
-                        System.out.println("OK! I've " + (done ? "marked" : "unmarked") + " this task:");
-                        System.out.println(selectedTask);
-                        drawHorizontalLine();
+                        printMessage(selectedTask, tasks.size(), command);
                         continue;
                     case "todo":
                         // Error Handling
                         if (arguments.isEmpty()) {
                             throw new KeefException("Bro, you left out what exactly you wanted to do! Add something!");
                         }
+
                         // Add new ToDo Task
                         Task new_todo = new ToDo(arguments);
                         tasks.add(new_todo);
-                        printAddMessage(new_todo, tasks.size());
+                        printMessage(new_todo, tasks.size(), "add");
                         continue;
                     case "deadline":
                         // Error Handling
@@ -83,10 +92,11 @@ public class Keef {
                         if (deadlineParts[0].isEmpty() || deadlineParts[1].isEmpty()) {
                             throw new KeefException("Bro, the description and date can't be empty!");
                         }
+
                         // Add new Deadline Task
                         Task deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
                         tasks.add(deadline);
-                        printAddMessage(deadline, tasks.size());
+                        printMessage(deadline, tasks.size(), "add");
                         continue;
                     case "event":
                         // Error Handling
@@ -101,10 +111,11 @@ public class Keef {
                                 eventParts[2].isEmpty()) {
                             throw new KeefException("Bro, you the event description, start, and end cannot be empty!");
                         }
+
                         // Add new Event Task
                         Task event = new Event(eventParts[0], eventParts[1], eventParts[2]);
                         tasks.add(event);
-                        printAddMessage(event, tasks.size());
+                        printMessage(event, tasks.size(), "add");
                         continue;
                     default:
                         // Invalid command
@@ -132,8 +143,15 @@ public class Keef {
         }
     }
     
-    public static void printAddMessage(Task task, int size) {
-        System.out.println("Got it. I've added this task:");
+    public static void printMessage(Task task, int size, String type) {
+        String pastTenseType = switch (type) {
+            case "add" -> "added";
+            case "delete" -> "deleted";
+            case "mark" -> "marked";
+            case "unmark" -> "unmarked";
+            default -> "";
+        };
+        System.out.println("Got it. I've " + pastTenseType + " this task:");
         System.out.println(task);
         System.out.println("Now you have " + size + " tasks in your list.");
         drawHorizontalLine();
