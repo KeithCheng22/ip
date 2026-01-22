@@ -16,10 +16,16 @@ public class Keef {
 
         // Conversation logic
         while (true) {
-            System.out.print("You: ");
+            System.out.print("You:");
+
+            try {
+                userInput = sc.nextLine();
+            } catch (Exception e) {
+                // Input ended, stop program
+                break;
+            }
 
             // Get user input and vary response according to it
-            userInput = sc.nextLine();
             String[] parts = userInput.split(" ", 2);
             String command = parts[0];
             String arguments  = parts.length > 1 ? parts[1] : "";
@@ -53,7 +59,7 @@ public class Keef {
                         selectedTask.markAsUndone();
                     }
 
-                    System.out.println("OK! I've marked this task as " + (done ? "done: " : "not done yet:"));
+                    System.out.println("OK! I've marked this task as " + (done ? "done:" : "not done yet:"));
                     System.out.println(selectedTask);
                     drawHorizontalLine();
                     continue;
