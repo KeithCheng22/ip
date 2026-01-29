@@ -9,7 +9,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, File dataFile) throws KeefException {
+    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.size());
         Task task = tasks.get(taskIndex - 1);
 
@@ -20,7 +20,7 @@ public class MarkCommand extends Command {
         }
 
         task.markAsDone();
-        Keef.saveTasks(tasks, dataFile);
+        storage.saveTasks();
         ui.drawHorizontalLine();
         ui.showMessage("Keef: ");
         ui.printMessage(task, tasks.size(), CommandType.MARK);

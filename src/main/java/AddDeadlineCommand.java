@@ -12,7 +12,7 @@ public class AddDeadlineCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, File dataFile) throws KeefException {
+    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
         // Validate arguments
         if (!arguments.contains("/by")) {
             throw new KeefException("Bro, you must include /by <date>");
@@ -40,7 +40,7 @@ public class AddDeadlineCommand extends Command {
         tasks.add(deadlineTask);
 
         // Save and show message
-        Keef.saveTasks(tasks, dataFile);
+        storage.saveTasks();
         ui.drawHorizontalLine();
         ui.showMessage("Keef: ");
         ui.printMessage(deadlineTask, tasks.size(), CommandType.ADD);

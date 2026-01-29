@@ -3,7 +3,7 @@ import java.util.List;
 
 public class ByeCommand extends Command {
     @Override
-    public void execute(List<Task> tasks, Ui ui, File dataFile) {
+    public void execute(List<Task> tasks, Ui ui, Storage storage) {
         ui.drawHorizontalLine();
         ui.showGoodbye();
     }
