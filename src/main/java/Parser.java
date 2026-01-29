@@ -1,0 +1,42 @@
+public class Parser {
+    public static Command parse(String fullCommand) throws KeefException {
+        String[] parts = fullCommand.trim().split(" ", 2);
+        String commandWord = parts[0].toUpperCase();
+        String arguments = parts.length > 1 ? parts[1] : "";
+
+        CommandType type = CommandType.fromString(commandWord);
+
+        return switch (type) {
+            case BYE -> new ByeCommand();
+            case LIST -> new ListCommand();
+            case TODO -> new AddTodoCommand(arguments);
+            case DEADLINE -> new AddDeadlineCommand(arguments);
+            case EVENT -> new AddEventCommand(arguments);
+            case MARK -> new MarkCommand(arguments);
+            case UNMARK -> new UnmarkCommand(arguments);
+            case DELETE -> new DeleteCommand(arguments);
+            default -> throw new KeefException("Keef: Huh, what do you mean?");
+        };
+    }
+
+    public static int parseTaskIndex (String arguments, int max) throws KeefException {
+        Ui ui = new Ui();
+        int taskIndex;
+        try {
+            taskIndex = Integer.parseInt(arguments.trim());
+        } catch (NumberFormatException e) {
+            ui.drawHorizontalLine();
+            ui.showMessage("Keef: ");
+            throw new KeefException("Uhm bro, that's not a valid task number!");
+        }
+
+        boolean outOfBounds = taskIndex <= 0 || taskIndex > max;
+        if (outOfBounds) {
+            ui.drawHorizontalLine();
+            ui.showMessage("Keef: ");
+            throw new KeefException("Uhm bro, you only have " + max + " task(s) in your list.");
+        }
+
+        return taskIndex;
+    }
+}
