@@ -1,12 +1,9 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,79 +12,66 @@ public class Keef {
         File dataFile = new File("./data/keef.txt");
 
         // Scanner object to read input from the keyboard
-        Scanner sc = new Scanner(System.in);
-        String userInput = "";
+        Ui ui = new Ui();
+        String userInput;
 
         // ArrayList to store userInput
         List<Task> tasks = loadTasks(dataFile);
 
-        // Hello greeting
-        drawHorizontalLine();
-        System.out.println("Hello! I'm Keef!\nWhat can I do for you? ~");
-        drawHorizontalLine();
+        ui.showWelcome();
 
         // Conversation logic
         while (true) {
-            System.out.print("You:");
-
             try {
-                userInput = sc.nextLine();
+                userInput = ui.readCommand();
 
                 // Get user input and vary response according to it
                 String[] parts = userInput.trim().split(" ", 2);
                 CommandType commandType = CommandType.fromString(parts[0]);
                 String arguments = parts.length > 1 ? parts[1] : "";
 
-                drawHorizontalLine();
-                System.out.print("Keef: ");
+                ui.drawHorizontalLine();
+                ui.showMessage("Keef: ");
 
                 switch (commandType) {
                 case BYE:
                     // Bye greeting
-                    System.out.println("See ya soon! ~");
-                    drawHorizontalLine();
+                    ui.showGoodbye();
                     return;
                 case LIST:
                     // List out all items stored
-                    if (tasks.isEmpty()) {
-                        System.out.println("You don't have any tasks yet. Start adding!");
-                    } else {
-                        System.out.println("Here are the tasks in your list:");
-                        printTasks(tasks);
-                    }
-                    drawHorizontalLine();
+                    ui.printTasks(tasks);
                     continue;
+                case MARK:
+                case UNMARK:
+                case DELETE:
+                    // Get the task number to be marked / unmarked / deleted
+                    int taskIndex = Integer.parseInt(arguments);
+                    // Error Handling
+                    boolean outOfBounds = taskIndex <= 0 || taskIndex - 1 >= tasks.size();
+                    if (outOfBounds) {
+                        throw new KeefException("Uhm bro, you " + (tasks.isEmpty() ? "" : "only ") + "have " + tasks.size() + " task(s) in your list.");
+                    }
+                    Task selectedTask = tasks.get(taskIndex - 1);
 
-                    case MARK:
-                    case UNMARK:
-                    case DELETE:
-                        // Get the task number to be marked / unmarked / deleted
-                        int taskIndex = Integer.parseInt(arguments);
-                        // Error Handling
-                        boolean outOfBounds = taskIndex <= 0 || taskIndex - 1 >= tasks.size();
-                        if (outOfBounds) {
-                            throw new KeefException("Uhm bro, you " + (tasks.isEmpty() ? "" : "only ") + "have " + tasks.size() + " task(s) in your list.");
+                    // Mark / Unmark / Delete a Task
+                    if (commandType == CommandType.MARK) {
+                        if (selectedTask.isDone()) {
+                            throw new KeefException("You are already done with this task!");
                         }
-                        Task selectedTask = tasks.get(taskIndex - 1);
-
-                        // Mark / Unmark / Delete a Task
-                        if (commandType == CommandType.MARK) {
-                            if (selectedTask.isDone()) {
-                                throw new KeefException("You are already done with this task!");
-                            }
-                            selectedTask.markAsDone();
-                        } else if (commandType == CommandType.UNMARK) {
-                            if (!selectedTask.isDone()) {
-                                throw new KeefException("You didn't mark this task to begin with!");
-                            }
-                            selectedTask.markAsUndone();
-                        } else {
-                            tasks.remove(selectedTask);
+                        selectedTask.markAsDone();
+                    } else if (commandType == CommandType.UNMARK) {
+                        if (!selectedTask.isDone()) {
+                            throw new KeefException("You didn't mark this task to begin with!");
                         }
-                        saveTasks(tasks, dataFile);
+                        selectedTask.markAsUndone();
+                    } else {
+                        tasks.remove(selectedTask);
+                    }
+                    saveTasks(tasks, dataFile);
 
-                        printMessage(selectedTask, tasks.size(), commandType);
-                        continue;
+                    ui.printMessage(selectedTask, tasks.size(), commandType);
+                    continue;
                     case TODO:
                         // Error Handling
                         if (arguments.isEmpty()) {
@@ -98,7 +82,7 @@ public class Keef {
                         Task new_todo = new ToDo(arguments);
                         tasks.add(new_todo);
                         saveTasks(tasks, dataFile);
-                        printMessage(new_todo, tasks.size(), CommandType.ADD);
+                        ui.printMessage(new_todo, tasks.size(), CommandType.ADD);
                         continue;
                     case DEADLINE:
                         // Error Handling
@@ -126,7 +110,7 @@ public class Keef {
                         Task deadline = new Deadline(deadlineParts[0], by);
                         tasks.add(deadline);
                         saveTasks(tasks, dataFile);
-                        printMessage(deadline, tasks.size(), CommandType.ADD);
+                        ui.printMessage(deadline, tasks.size(), CommandType.ADD);
                         continue;
                     case EVENT:
                         // Error Handling
@@ -163,7 +147,7 @@ public class Keef {
                         Task event = new Event(eventDescriptionString, eventFrom, eventTo);
                         tasks.add(event);
                         saveTasks(tasks, dataFile);
-                        printMessage(event, tasks.size(), CommandType.ADD);
+                        ui.printMessage(event, tasks.size(), CommandType.ADD);
                         continue;
                     default:
                         // Shouldn't reach here
@@ -171,37 +155,9 @@ public class Keef {
             }
             catch (KeefException e) {
                 System.out.println(e.getMessage());
-                drawHorizontalLine();
+                ui.drawHorizontalLine();
             }
         }
-    }
-
-    public static void drawHorizontalLine() {
-        int length = 50;
-        for (int i = 0; i < length; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
-    }
-
-    public static void printTasks(List<Task> tasks) {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println(i+1 + "." + " " + tasks.get(i));
-        }
-    }
-    
-    public static void printMessage(Task task, int size, CommandType type) {
-        String pastTenseType = switch (type) {
-            case ADD -> "added";
-            case DELETE -> "deleted";
-            case MARK -> "marked";
-            case UNMARK -> "unmarked";
-            default -> "";
-        };
-        System.out.println("Got it. I've " + pastTenseType + " this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + size + " tasks in your list.");
-        drawHorizontalLine();
     }
 
     public static List<Task> loadTasks(File dataFile) {
