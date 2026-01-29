@@ -2,6 +2,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,12 +106,24 @@ public class Keef {
                             throw new KeefException("Bro, you must include /by <date>");
                         }
                         String[] deadlineParts = arguments.split("/by", 2);
-                        if (deadlineParts[0].isEmpty() || deadlineParts[1].isEmpty()) {
+                        String deadlineDescriptionString = deadlineParts[0].trim();
+                        String dateString = deadlineParts[1].trim();
+                        if (deadlineDescriptionString.isEmpty() || dateString.isEmpty()) {
                             throw new KeefException("Bro, the description and date can't be empty!");
                         }
 
+                        DateTimeFormatter deadlineInputFormatter =
+                                DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+
                         // Add new Deadline Task
-                        Task deadline = new Deadline(deadlineParts[0], deadlineParts[1]);
+                        LocalDateTime by;
+                        try {
+                            by = LocalDateTime.parse(dateString, deadlineInputFormatter);
+                        } catch (Exception e) {
+                            throw new KeefException("Use date format: d/M/yyyy HHmm");
+                        }
+
+                        Task deadline = new Deadline(deadlineParts[0], by);
                         tasks.add(deadline);
                         saveTasks(tasks, dataFile);
                         printMessage(deadline, tasks.size(), CommandType.ADD);
@@ -127,8 +142,25 @@ public class Keef {
                             throw new KeefException("Bro, you the event description, start, and end cannot be empty!");
                         }
 
+                        String eventDescriptionString = eventParts[0].trim();
+                        String dateFromString = eventParts[1].trim();
+                        String dateToString = eventParts[2].trim();
+
+                        DateTimeFormatter eventInputFormatter =
+                                DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+
+                        // Add new Deadline Task
+                        LocalDateTime eventFrom;
+                        LocalDateTime eventTo;
+                        try {
+                            eventFrom = LocalDateTime.parse(dateFromString, eventInputFormatter);
+                            eventTo = LocalDateTime.parse(dateToString, eventInputFormatter);
+                        } catch (Exception e) {
+                            throw new KeefException("Use date format: d/M/yyyy HHmm");
+                        }
+
                         // Add new Event Task
-                        Task event = new Event(eventParts[0], eventParts[1], eventParts[2]);
+                        Task event = new Event(eventDescriptionString, eventFrom, eventTo);
                         tasks.add(event);
                         saveTasks(tasks, dataFile);
                         printMessage(event, tasks.size(), CommandType.ADD);
@@ -192,8 +224,8 @@ public class Keef {
                 boolean isDone = parts[1].equals("1");
                 Task task = switch (type) {
                     case "T" -> new ToDo(parts[2]);
-                    case "D" -> new Deadline(parts[2], parts[3]);
-                    case "E" -> new Event(parts[2], parts[3], parts[4]);
+                    case "D" -> new Deadline(parts[2], LocalDateTime.parse(parts[3]));
+                    case "E" -> new Event(parts[2],  LocalDateTime.parse(parts[3]),  LocalDateTime.parse(parts[3]));
                     default -> null;
                 };
 
