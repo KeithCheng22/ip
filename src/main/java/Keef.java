@@ -1,15 +1,16 @@
-import java.util.List;
-
-
 public class Keef {
     private Storage storage;
     private Ui ui;
-    private List<Task> tasks;
+    private TaskList tasks;
 
     public Keef(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
-        tasks = storage.getTasks();
+        try {
+            tasks = storage.loadTasks();
+        } catch (Exception e) {
+            tasks = new TaskList();
+        }
     }
 
     public void run(){

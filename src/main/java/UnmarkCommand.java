@@ -9,9 +9,9 @@ public class UnmarkCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
-        int taskIndex = Parser.parseTaskIndex(arguments, tasks.size());
-        Task task = tasks.get(taskIndex - 1);
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+        int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
+        Task task = tasks.getTask(taskIndex - 1);
 
         if (!task.isDone()) {
             ui.drawHorizontalLine();
@@ -19,10 +19,10 @@ public class UnmarkCommand extends Command {
             throw new KeefException("You didn't mark this task to begin with!");
         }
 
-        task.markAsUndone();
+        tasks.unmarkTask(task);
         storage.saveTasks();
         ui.botReply();
-        ui.printMessage(task, tasks.size(), CommandType.UNMARK);
+        ui.printMessage(task, tasks.getSize(), CommandType.UNMARK);
     }
 
     @Override

@@ -2,25 +2,23 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Storage {
     protected String filePath;
-    protected List<Task> tasks;
+    protected TaskList tasks;
 
     public Storage(String filePath) {
         this.filePath = filePath;
         this.tasks = loadTasks();
     }
 
-    public List<Task> loadTasks() {
+    public TaskList loadTasks() {
         File dataFile = new File(filePath);
-        List<Task> tasks = new ArrayList<>();
+        TaskList tasks = new TaskList();
 
         if (!dataFile.exists()) {
-            return tasks;
+            return new TaskList();
         }
 
         try (Scanner sc = new Scanner(dataFile)) {
@@ -42,11 +40,11 @@ public class Storage {
                 };
 
                 if (task != null && isDone) {
-                    task.markAsDone();
+                    tasks.markTask(task);
                 }
 
                 if (task != null) {
-                    tasks.add(task);
+                    tasks.addTask(task);
                 }
             }
         } catch (IOException e) {
@@ -56,7 +54,7 @@ public class Storage {
         return tasks;
     }
 
-    public  void saveTasks() {
+    public void saveTasks() {
         File dataFile = new File(filePath);
         try {
             File folder = dataFile.getParentFile();
@@ -65,7 +63,7 @@ public class Storage {
             }
 
             FileWriter writer = new FileWriter(dataFile);
-            for (Task task : tasks) {
+            for (Task task : tasks.getAllTasks()) {
                 String line = "";
                 if (task instanceof ToDo) {
                     line = "T | " + (task.isDone() ? "1" : "0") + " | " + task.description;
@@ -85,7 +83,7 @@ public class Storage {
         }
     }
 
-    public List<Task> getTasks() {
+    public TaskList getTasks() {
         return tasks;
     }
 }

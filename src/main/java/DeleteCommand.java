@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class DeleteCommand extends Command {
     private final String arguments;
 
@@ -8,14 +6,14 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
-        int taskIndex = Parser.parseTaskIndex(arguments, tasks.size());
-        Task task = tasks.get(taskIndex - 1);
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+        int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
+        Task task = tasks.getTask(taskIndex - 1);
 
-        tasks.remove(task);
+        tasks.deleteTask(task);
         storage.saveTasks();
         ui.botReply();
-        ui.printMessage(task, tasks.size(), CommandType.DELETE);
+        ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
     }
 
     @Override

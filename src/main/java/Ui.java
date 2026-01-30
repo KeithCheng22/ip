@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -28,13 +27,13 @@ public class Ui {
         System.out.println(message);
     }
 
-    public void printTasks(List<Task> tasks) {
-        if (tasks.isEmpty()) {
+    public void printTasks(TaskList tasks) {
+        if (tasks.getSize() == 0) {
             showMessage("You don't have any tasks yet. Start adding!");
         } else {
             showMessage("Here are the tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                showMessage(i + 1 + "." + " " + tasks.get(i));
+            for (int i = 0; i < tasks.getSize(); i++) {
+                showMessage(i + 1 + "." + " " + tasks.getTask(i));
             }
         }
     }

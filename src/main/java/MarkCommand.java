@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class MarkCommand extends Command {
     private final String arguments;
 
@@ -8,17 +6,17 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
-        int taskIndex = Parser.parseTaskIndex(arguments, tasks.size());
-        Task task = tasks.get(taskIndex - 1);
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+        int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
+        Task task = tasks.getTask(taskIndex - 1);
 
         if (task.isDone()) {
             throw new KeefException("You are already done with this task!");
         }
 
-        task.markAsDone();
+        tasks.markTask(task);
         storage.saveTasks();
-        ui.printMessage(task, tasks.size(), CommandType.MARK);
+        ui.printMessage(task, tasks.getSize(), CommandType.MARK);
     }
 
     @Override
