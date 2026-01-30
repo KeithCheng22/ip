@@ -1,7 +1,5 @@
-import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class AddDeadlineCommand extends Command {
     private final String arguments;
@@ -12,7 +10,7 @@ public class AddDeadlineCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Validate arguments
         if (!arguments.contains("/by")) {
             throw new KeefException("Bro, you must include /by <date>");
@@ -37,11 +35,11 @@ public class AddDeadlineCommand extends Command {
 
         // Create the deadline task
         deadlineTask = new Deadline(description, by);
-        tasks.add(deadlineTask);
+        tasks.addTask(deadlineTask);
 
         // Save and show message
         storage.saveTasks();
-        ui.printMessage(deadlineTask, tasks.size(), CommandType.ADD);
+        ui.printMessage(deadlineTask, tasks.getSize(), CommandType.ADD);
     }
 
     @Override

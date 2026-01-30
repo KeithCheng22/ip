@@ -12,7 +12,7 @@ public class AddEventCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui, Storage storage) throws KeefException {
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         if (!arguments.contains("/from") || !arguments.contains("/to")) {
             throw new KeefException("Bro, you must include /from <start> and /to <end>.");
         }
@@ -43,11 +43,11 @@ public class AddEventCommand extends Command {
 
         // Create the event task
         eventTask = new Event(description, from, to);
-        tasks.add(eventTask);
+        tasks.addTask(eventTask);
 
         // Save and show message
         storage.saveTasks();
-        ui.printMessage(eventTask, tasks.size(), CommandType.ADD);
+        ui.printMessage(eventTask, tasks.getSize(), CommandType.ADD);
     }
 
     @Override
