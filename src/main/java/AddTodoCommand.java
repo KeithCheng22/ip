@@ -15,8 +15,6 @@ public class AddTodoCommand extends Command {
         Task task = new ToDo(description);
         tasks.add(task);
         storage.saveTasks();
-        ui.drawHorizontalLine();
-        ui.showMessage("Keef: ");
         ui.printMessage(task, tasks.size(), CommandType.ADD);
     }
 }

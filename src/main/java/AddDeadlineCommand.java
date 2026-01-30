@@ -41,8 +41,6 @@ public class AddDeadlineCommand extends Command {
 
         // Save and show message
         storage.saveTasks();
-        ui.drawHorizontalLine();
-        ui.showMessage("Keef: ");
         ui.printMessage(deadlineTask, tasks.size(), CommandType.ADD);
     }
 

@@ -1,4 +1,3 @@
-import java.io.File;
 import java.util.List;
 
 public class MarkCommand extends Command {
@@ -14,15 +13,11 @@ public class MarkCommand extends Command {
         Task task = tasks.get(taskIndex - 1);
 
         if (task.isDone()) {
-            ui.drawHorizontalLine();
-            ui.showMessage("Keef: ");
             throw new KeefException("You are already done with this task!");
         }
 
         task.markAsDone();
         storage.saveTasks();
-        ui.drawHorizontalLine();
-        ui.showMessage("Keef: ");
         ui.printMessage(task, tasks.size(), CommandType.MARK);
     }
 

@@ -15,25 +15,20 @@ public class Parser {
             case MARK -> new MarkCommand(arguments);
             case UNMARK -> new UnmarkCommand(arguments);
             case DELETE -> new DeleteCommand(arguments);
-            default -> throw new KeefException("Keef: Huh, what do you mean?");
+            default -> throw new KeefException("Huh, what do you mean?");
         };
     }
 
     public static int parseTaskIndex (String arguments, int max) throws KeefException {
-        Ui ui = new Ui();
         int taskIndex;
         try {
             taskIndex = Integer.parseInt(arguments.trim());
         } catch (NumberFormatException e) {
-            ui.drawHorizontalLine();
-            ui.showMessage("Keef: ");
             throw new KeefException("Uhm bro, that's not a valid task number!");
         }
 
-        boolean outOfBounds = taskIndex <= 0 || taskIndex > max;
-        if (outOfBounds) {
-            ui.drawHorizontalLine();
-            ui.showMessage("Keef: ");
+        boolean isOutOfBounds = taskIndex <= 0 || taskIndex > max;
+        if (isOutOfBounds) {
             throw new KeefException("Uhm bro, you only have " + max + " task(s) in your list.");
         }
 

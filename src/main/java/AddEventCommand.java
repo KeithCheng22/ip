@@ -47,8 +47,6 @@ public class AddEventCommand extends Command {
 
         // Save and show message
         storage.saveTasks();
-        ui.drawHorizontalLine();
-        ui.showMessage("Keef: ");
         ui.printMessage(eventTask, tasks.size(), CommandType.ADD);
     }
 

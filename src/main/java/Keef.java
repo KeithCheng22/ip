@@ -22,7 +22,8 @@ public class Keef {
                 command.execute(tasks, ui, storage);
                 isExit = command.isExit();
             } catch (KeefException e) {
-                System.out.println(e.getMessage());
+                ui.showError(e.getMessage());
+            } finally {
                 ui.drawHorizontalLine();
             }
         }

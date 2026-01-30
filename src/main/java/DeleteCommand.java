@@ -1,4 +1,3 @@
-import java.io.File;
 import java.util.List;
 
 public class DeleteCommand extends Command {
@@ -15,8 +14,7 @@ public class DeleteCommand extends Command {
 
         tasks.remove(task);
         storage.saveTasks();
-        ui.drawHorizontalLine();
-        ui.showMessage("Keef: ");
+        ui.botReply();
         ui.printMessage(task, tasks.size(), CommandType.DELETE);
     }
 

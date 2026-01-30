@@ -21,8 +21,7 @@ public class UnmarkCommand extends Command {
 
         task.markAsUndone();
         storage.saveTasks();
-        ui.drawHorizontalLine();
-        ui.showMessage("Keef: ");
+        ui.botReply();
         ui.printMessage(task, tasks.size(), CommandType.UNMARK);
     }
 
