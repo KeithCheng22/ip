@@ -14,10 +14,12 @@ import keef.exception.KeefException;
 
 public class Parser {
     public static Command parse(String fullCommand) throws KeefException {
+        // Split the command into its arguments
         String[] parts = fullCommand.trim().split(" ", 2);
         String commandWord = parts[0].toUpperCase();
         String arguments = parts.length > 1 ? parts[1] : "";
 
+        // Get the command type to execute
         CommandType type = CommandType.fromString(commandWord);
 
         return switch (type) {
@@ -41,6 +43,7 @@ public class Parser {
             throw new KeefException("Uhm bro, that's not a valid task number!");
         }
 
+        // If taskIndex is OOB
         boolean isOutOfBounds = taskIndex <= 0 || taskIndex > max;
         if (isOutOfBounds) {
             throw new KeefException("Uhm bro, you only have " + max + " task(s) in your list.");

@@ -16,10 +16,14 @@ public class DeleteCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+        // Get the task to delete via the TaskIndex
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
         Task task = tasks.getTask(taskIndex - 1);
 
+        // Delete the task
         tasks.deleteTask(task);
+
+        // Save and show message
         storage.saveTasks();
         ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
     }

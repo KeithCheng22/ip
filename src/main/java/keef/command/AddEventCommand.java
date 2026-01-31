@@ -20,6 +20,7 @@ public class AddEventCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+        // Validate arguments
         if (!arguments.contains("/from") || !arguments.contains("/to")) {
             throw new KeefException("Bro, you must include /from <start> and /to <end>.");
         }

@@ -16,18 +16,20 @@ public class UnmarkCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+        // Get the task to unmark via the TaskIndex
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
         Task task = tasks.getTask(taskIndex - 1);
 
+        // Throw exception if task is already marked as done
         if (!task.isDone()) {
-            ui.drawHorizontalLine();
-            ui.showMessage("keef.Keef: ");
             throw new KeefException("You didn't mark this task to begin with!");
         }
 
+        // Unmark the task
         tasks.unmarkTask(task);
+
+        // Save and show message
         storage.saveTasks();
-        ui.botReply();
         ui.printMessage(task, tasks.getSize(), CommandType.UNMARK);
     }
 

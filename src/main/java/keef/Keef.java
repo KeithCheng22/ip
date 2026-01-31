@@ -8,8 +8,8 @@ import keef.task.TaskList;
 import keef.ui.Ui;
 
 public class Keef {
-    private Storage storage;
-    private Ui ui;
+    private final Storage storage;
+    private final Ui ui;
     private TaskList tasks;
 
     public Keef(String filePath) {
