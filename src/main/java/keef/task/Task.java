@@ -1,6 +1,8 @@
-public class Task {
-    protected String description;
-    protected boolean isDone;
+package keef.task;
+
+public abstract class Task {
+    private String description;
+    private boolean isDone;
 
     public Task(String description) {
         this.description = description;
@@ -21,6 +23,10 @@ public class Task {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override

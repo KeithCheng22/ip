@@ -1,3 +1,11 @@
+package keef.storage;
+
+import keef.task.Deadline;
+import keef.task.Event;
+import keef.task.Task;
+import keef.task.TaskList;
+import keef.task.ToDo;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -5,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Storage {
-    protected String filePath;
-    protected TaskList tasks;
+    private String filePath;
+    private TaskList tasks;
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -66,13 +74,14 @@ public class Storage {
             for (Task task : tasks.getAllTasks()) {
                 String line = "";
                 if (task instanceof ToDo) {
-                    line = "T | " + (task.isDone() ? "1" : "0") + " | " + task.description;
+                    line = "T | " + (task.isDone() ? "1" : "0") + " | " + task.getDescription();
                 } else if (task instanceof Deadline) {
                     Deadline d = (Deadline) task;
-                    line = "D | " + (d.isDone() ? "1" : "0") + " | " + d.description + " | " + d.by;
+                    line = "D | " + (d.isDone() ? "1" : "0") + " | " + d.getDescription() + " | " + d.getBy();
                 } else if (task instanceof Event) {
                     Event e = (Event) task;
-                    line = "E | " + (e.isDone() ? "1" : "0") + " | " + e.description + " | " + e.from + " | " + e.to;
+                    line = "E | " + (e.isDone() ? "1" : "0") + " | " + e.getDescription() + " | "
+                            + e.getFrom() + " | " + e.getTo();
                 }
 
                 writer.write(line + System.lineSeparator());

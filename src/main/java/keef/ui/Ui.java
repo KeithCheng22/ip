@@ -1,3 +1,9 @@
+package keef.ui;
+
+import keef.task.Task;
+import keef.task.TaskList;
+import keef.command.CommandType;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -19,7 +25,6 @@ public class Ui {
     }
 
     public void showGoodbye() {
-        botReply();
         System.out.println("See ya soon! ~");
     }
 
@@ -49,7 +54,6 @@ public class Ui {
     }
 
     public void printMessage(Task task, int size, CommandType type) {
-        botReply();
         String pastTenseType = switch (type) {
             case ADD -> "added";
             case DELETE -> "deleted";

@@ -1,5 +1,11 @@
-import java.io.File;
-import java.util.List;
+package keef.command;
+
+import keef.exception.KeefException;
+import keef.parser.Parser;
+import keef.storage.Storage;
+import keef.task.Task;
+import keef.task.TaskList;
+import keef.ui.Ui;
 
 public class UnmarkCommand extends Command {
     private final String arguments;
@@ -15,7 +21,7 @@ public class UnmarkCommand extends Command {
 
         if (!task.isDone()) {
             ui.drawHorizontalLine();
-            ui.showMessage("Keef: ");
+            ui.showMessage("keef.Keef: ");
             throw new KeefException("You didn't mark this task to begin with!");
         }
 

@@ -1,88 +1,88 @@
 --------------------------------------------------
-Hello! I'm Keef!
+Hello! I'm keef.Keef!
 What can I do for you? ~
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Bro, you left out what exactly you wanted to do! Add something!
+keef.Keef: Bro, you left out what exactly you wanted to do! Add something!
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Got it. I've added this task:
+keef.Keef: Got it. I've added this task:
 [T][ ] read book
 Now you have 1 tasks in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Here are the tasks in your list:
+keef.Keef: Here are the tasks in your list:
 1. [T][ ] read book
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Bro, you must include /by <date>
+keef.Keef: Bro, you must include /by <date>
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Bro, you must include /by <date>
+keef.Keef: Bro, you must include /by <date>
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Bro, the description and date can't be empty!
+keef.Keef: Bro, the description and date can't be empty!
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Got it. I've added this task:
+keef.Keef: Got it. I've added this task:
 [D][ ] return book (by: Sunday)
 Now you have 2 tasks in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Here are the tasks in your list:
+keef.Keef: Here are the tasks in your list:
 1. [T][ ] read book
 2. [D][ ] return book (by: Sunday)
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Bro, you must include /from <start> and /to <end>.
+keef.Keef: Bro, you must include /from <start> and /to <end>.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Bro, you must include /from <start> and /to <end>.
+keef.Keef: Bro, you must include /from <start> and /to <end>.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Got it. I've added this task:
+keef.Keef: Got it. I've added this task:
 [E][ ] project meeting (from: Mon 2pm to: 4pm)
 Now you have 3 tasks in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Got it. I've marked this task:
+keef.Keef: Got it. I've marked this task:
 [D][X] return book (by: Sunday)
 Now you have 3 tasks in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: You are already done with this task!
+keef.Keef: You are already done with this task!
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Here are the tasks in your list:
+keef.Keef: Here are the tasks in your list:
 1. [T][ ] read book
 2. [D][X] return book (by: Sunday)
 3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Got it. I've unmarked this task:
+keef.Keef: Got it. I've unmarked this task:
 [D][ ] return book (by: Sunday)
 Now you have 3 tasks in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: You didn't mark this task to begin with!
+keef.Keef: You didn't mark this task to begin with!
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Here are the tasks in your list:
+keef.Keef: Here are the tasks in your list:
 1. [T][ ] read book
 2. [D][ ] return book (by: Sunday)
 3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Uhm bro, you only have 3 task(s) in your list.
+keef.Keef: Uhm bro, you only have 3 task(s) in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Got it. I've deleted this task:
+keef.Keef: Got it. I've deleted this task:
 [T][ ] read book
 Now you have 2 tasks in your list.
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: Huh, what do you mean?
+keef.Keef: Huh, what do you mean?
 --------------------------------------------------
 You:--------------------------------------------------
-Keef: See ya soon! ~
+keef.Keef: See ya soon! ~
 --------------------------------------------------
