@@ -33,6 +33,7 @@ public class Keef {
                 command.execute(tasks, ui, storage);
                 isExit = command.isExit();
             } catch (KeefException e) {
+                ui.botReply();
                 ui.showError(e.getMessage());
             } finally {
                 ui.drawHorizontalLine();
