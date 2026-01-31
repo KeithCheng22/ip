@@ -7,13 +7,31 @@ import keef.task.Task;
 import keef.task.TaskList;
 import keef.ui.Ui;
 
+/**
+ * Represents a command that deletes a task from the task list
+ * based on a user-specified task index.
+ */
 public class DeleteCommand extends Command {
     private final String arguments;
 
+    /**
+     * Constructs a {@code DeleteCommand} with the given arguments.
+     *
+     * @param arguments the task index provided by the user
+     */
     public DeleteCommand(String arguments) {
         this.arguments = arguments;
     }
 
+    /**
+     * Deletes the specified task from the task list, saves the updated list,
+     * and displays a confirmation message to the user.
+     *
+     * @param tasks the task list containing all current tasks
+     * @param ui the user interface for displaying messages
+     * @param storage the storage handler for persisting tasks
+     * @throws KeefException if the task index is invalid or out of bounds
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
@@ -24,6 +42,11 @@ public class DeleteCommand extends Command {
         ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
     }
 
+    /**
+     * Indicates whether this command exits the application.
+     *
+     * @return false since this command does not terminate the program
+     */
     @Override
     public boolean isExit() {
         return false;

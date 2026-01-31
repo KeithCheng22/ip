@@ -12,7 +12,19 @@ import keef.command.MarkCommand;
 import keef.command.UnmarkCommand;
 import keef.exception.KeefException;
 
+/**
+ * Parser is responsible for interpreting user input strings and converting
+ * them into corresponding Command objects that can be executed by the application.
+ */
 public class Parser {
+
+    /**
+     * Parses a full command string entered by the user and returns the corresponding Command.
+     *
+     * @param fullCommand the full user input string
+     * @return the Command object corresponding to the user input
+     * @throws KeefException if the command is invalid or unrecognized
+     */
     public static Command parse(String fullCommand) throws KeefException {
         String[] parts = fullCommand.trim().split(" ", 2);
         String commandWord = parts[0].toUpperCase();
@@ -33,6 +45,14 @@ public class Parser {
         };
     }
 
+    /**
+     * Parses a string representing a task index and validates it against the maximum allowed.
+     *
+     * @param arguments the string containing the task index
+     * @param max the maximum allowed task index
+     * @return the parsed task index as an integer
+     * @throws KeefException if the string is not a valid number or is out of bounds
+     */
     public static int parseTaskIndex (String arguments, int max) throws KeefException {
         int taskIndex;
         try {

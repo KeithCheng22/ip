@@ -12,15 +12,32 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+/**
+ * Storage handles loading and saving tasks to a persistent file.
+ * It maintains a TaskList internally and provides methods
+ * to read/write tasks from/to a file.
+ */
 public class Storage {
     private String filePath;
     private TaskList tasks;
 
+    /**
+     * Constructs a Storage object with the given file path.
+     * It automatically loads existing tasks from the file into memory.
+     *
+     * @param filePath the path to the file used for storing tasks
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
         this.tasks = loadTasks();
     }
 
+    /**
+     * Loads tasks from the data file into a TaskList.
+     * If the file does not exist, an empty TaskList is returned.
+     *
+     * @return a TaskList containing all tasks from the file
+     */
     public TaskList loadTasks() {
         File dataFile = new File(filePath);
         TaskList tasks = new TaskList();
@@ -62,6 +79,11 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves all tasks in the TaskList to the data file.
+     * Each task is written in a pipe-separated format:
+     * <code>Type | Status | Description | [Dates]</code>.
+     */
     public void saveTasks() {
         File dataFile = new File(filePath);
         try {
