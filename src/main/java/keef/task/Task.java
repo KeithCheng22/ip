@@ -5,7 +5,7 @@ package keef.task;
  * This class serves as the base class for all specific task types.
  */
 public abstract class Task {
-    private String description;
+    private final String description;
     private boolean isDone;
 
     /**

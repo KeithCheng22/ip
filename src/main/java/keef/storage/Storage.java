@@ -18,8 +18,8 @@ import java.util.Scanner;
  * to read/write tasks from/to a file.
  */
 public class Storage {
-    private String filePath;
-    private TaskList tasks;
+    private final String filePath;
+    private final TaskList tasks;
 
     /**
      * Constructs a Storage object with the given file path.
@@ -48,6 +48,7 @@ public class Storage {
 
         try (Scanner sc = new Scanner(dataFile)) {
             while (sc.hasNextLine()) {
+                // Read each task in the datafile
                 String line = sc.nextLine();
                 String[] parts = line.split("\\|");
 
@@ -55,6 +56,7 @@ public class Storage {
                     parts[i] = parts[i].trim();
                 }
 
+                // Get the details of each task
                 String type = parts[0];
                 boolean isDone = parts[1].equals("1");
                 Task task = switch (type) {
@@ -64,10 +66,12 @@ public class Storage {
                     default -> null;
                 };
 
+                // Mark task if it is done
                 if (task != null && isDone) {
                     tasks.markTask(task);
                 }
 
+                // Add task if it is not null
                 if (task != null) {
                     tasks.addTask(task);
                 }
@@ -88,11 +92,15 @@ public class Storage {
         File dataFile = new File(filePath);
         try {
             File folder = dataFile.getParentFile();
+
+            // Create a new folder if it does not exist
             if (!folder.exists()) {
                 folder.mkdirs();
             }
 
             FileWriter writer = new FileWriter(dataFile);
+
+            // Extract and write details about the task into the datafile
             for (Task task : tasks.getAllTasks()) {
                 String line = "";
                 if (task instanceof ToDo) {

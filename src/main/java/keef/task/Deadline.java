@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  * Extends the {@link Task} class.
  */
 public class Deadline extends Task {
-    private LocalDateTime by;
+    private final LocalDateTime by;
 
     /**
      * Constructs a new Deadline task with the specified description and deadline.

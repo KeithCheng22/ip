@@ -7,7 +7,7 @@ import java.util.List;
  * Represents a list of tasks and provides operations to manage them.
  */
 public class TaskList {
-    private List<Task> tasks;
+    private final List<Task> tasks;
 
     /**
      * Constructs an empty task list.
@@ -88,5 +88,4 @@ public class TaskList {
     public List<Task> getAllTasks(){
         return tasks;
     }
-
 }

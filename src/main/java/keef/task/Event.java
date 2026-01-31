@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
  * Extends the {@link Task} class.
  */
 public class Event extends Task  {
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /**
      * Constructs a new Event task with the specified description, start time, and end time.

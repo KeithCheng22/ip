@@ -14,8 +14,8 @@ import keef.ui.Ui;
  * and task list, and for running the main interaction loop with the user.
  */
 public class Keef {
-    private Storage storage;
-    private Ui ui;
+    private final Storage storage;
+    private final Ui ui;
     private TaskList tasks;
 
     /**
