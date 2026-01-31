@@ -15,7 +15,8 @@ public enum CommandType {
     MARK,
     UNMARK,
     DELETE,
-    ADD;
+    ADD,
+    FIND;
 
     /**
      * Converts a string into its corresponding {@code CommandType}.

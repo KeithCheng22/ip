@@ -111,6 +111,27 @@ public class Ui {
     }
 
     /**
+     * Displays all tasks that match a search query.
+     * <p>
+     * If no matching tasks are found, a message is shown to inform the user.
+     * Otherwise, each matching task is printed with an index, followed by
+     * the total number of tasks found.
+     *
+     * @param tasks the {@code TaskList} containing tasks that match the search keyword
+     */
+    public void printFoundTasks(TaskList tasks) {
+        if (tasks.getSize() == 0) {
+            showMessage("No matching tasks found.");
+        } else {
+            showMessage("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.getSize(); i++) {
+                showMessage((i + 1) + "." + " " + tasks.getTask(i));
+            }
+            showMessage("Found " + tasks.getSize() + " task(s).");
+        }
+    }
+
+    /**
      * Prints a horizontal line separator in the console.
      */
     public void drawHorizontalLine() {

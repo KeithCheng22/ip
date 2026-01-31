@@ -1,15 +1,6 @@
 package keef.parser;
 
-import keef.command.AddDeadlineCommand;
-import keef.command.AddEventCommand;
-import keef.command.AddTodoCommand;
-import keef.command.ByeCommand;
-import keef.command.Command;
-import keef.command.CommandType;
-import keef.command.DeleteCommand;
-import keef.command.ListCommand;
-import keef.command.MarkCommand;
-import keef.command.UnmarkCommand;
+import keef.command.*;
 import keef.exception.KeefException;
 
 /**
@@ -43,6 +34,7 @@ public class Parser {
             case MARK -> new MarkCommand(arguments);
             case UNMARK -> new UnmarkCommand(arguments);
             case DELETE -> new DeleteCommand(arguments);
+            case FIND -> new FindCommand(arguments);
             default -> throw new KeefException("Huh, what do you mean?");
         };
     }
