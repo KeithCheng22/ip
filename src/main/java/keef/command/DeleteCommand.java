@@ -1,3 +1,12 @@
+package keef.command;
+
+import keef.exception.KeefException;
+import keef.parser.Parser;
+import keef.storage.Storage;
+import keef.task.Task;
+import keef.task.TaskList;
+import keef.ui.Ui;
+
 public class DeleteCommand extends Command {
     private final String arguments;
 
@@ -12,7 +21,6 @@ public class DeleteCommand extends Command {
 
         tasks.deleteTask(task);
         storage.saveTasks();
-        ui.botReply();
         ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
     }
 

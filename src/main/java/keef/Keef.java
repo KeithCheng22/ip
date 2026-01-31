@@ -1,3 +1,12 @@
+package keef;
+
+import keef.command.Command;
+import keef.exception.KeefException;
+import keef.parser.Parser;
+import keef.storage.Storage;
+import keef.task.TaskList;
+import keef.ui.Ui;
+
 public class Keef {
     private Storage storage;
     private Ui ui;
@@ -20,6 +29,7 @@ public class Keef {
             try {
                 String fullCommand = ui.readCommand();
                 Command command = Parser.parse(fullCommand);
+                ui.botReply();
                 command.execute(tasks, ui, storage);
                 isExit = command.isExit();
             } catch (KeefException e) {

@@ -1,3 +1,7 @@
+package keef.command;
+
+import keef.exception.KeefException;
+
 public enum CommandType {
     LIST,
     BYE,

@@ -1,7 +1,14 @@
+package keef.command;
+
+import keef.exception.KeefException;
+import keef.storage.Storage;
+import keef.task.Event;
+import keef.task.Task;
+import keef.task.TaskList;
+import keef.ui.Ui;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.io.File;
 
 public class AddEventCommand extends Command {
     private final String arguments;
