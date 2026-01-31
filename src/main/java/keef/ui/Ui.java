@@ -65,6 +65,18 @@ public class Ui {
         showMessage("Now you have " + size + " tasks in your list.");
     }
 
+    public void printFoundTasks(TaskList tasks) {
+        if (tasks.getSize() == 0) {
+            showMessage("No matching tasks found.");
+        } else {
+            showMessage("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.getSize(); i++) {
+                showMessage((i + 1) + "." + " " + tasks.getTask(i));
+            }
+            showMessage("Found " + tasks.getSize() + " task(s).");
+        }
+    }
+
     public void drawHorizontalLine() {
         int length = 50;
         System.out.println("-".repeat(length));

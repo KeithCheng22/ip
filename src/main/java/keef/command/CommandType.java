@@ -11,7 +11,8 @@ public enum CommandType {
     MARK,
     UNMARK,
     DELETE,
-    ADD;
+    ADD,
+    FIND;
 
     public static CommandType fromString(String commandType) throws KeefException {
         try {
