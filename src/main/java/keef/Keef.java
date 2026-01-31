@@ -7,11 +7,22 @@ import keef.storage.Storage;
 import keef.task.TaskList;
 import keef.ui.Ui;
 
+/**
+ * The main class for the Keef application.
+ *
+ * This class is responsible for initializing the storage, user interface,
+ * and task list, and for running the main interaction loop with the user.
+ */
 public class Keef {
     private Storage storage;
     private Ui ui;
     private TaskList tasks;
 
+    /**
+     * Constructs a new Keef instance with the given file path for storage.
+     *
+     * @param filePath the path to the file where tasks are stored
+     */
     public Keef(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -22,6 +33,12 @@ public class Keef {
         }
     }
 
+    /**
+     * Runs the main interaction loop of the application.
+     *
+     * Continuously reads user commands, executes them, and displays responses
+     * until the user exits the application.
+     */
     public void run(){
         ui.showWelcome();
         boolean isExit = false;
@@ -33,7 +50,6 @@ public class Keef {
                 command.execute(tasks, ui, storage);
                 isExit = command.isExit();
             } catch (KeefException e) {
-                ui.botReply();
                 ui.showError(e.getMessage());
             } finally {
                 ui.drawHorizontalLine();
@@ -41,6 +57,11 @@ public class Keef {
         }
     }
 
+    /**
+     * The entry point of the Keef application.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         new Keef("./data/keef.txt").run();
     }

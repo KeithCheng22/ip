@@ -10,14 +10,34 @@ import keef.ui.Ui;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a command that adds a deadline task to the task list.
+ * A deadline consists of a description and a date/time specified using
+ * the {@code /by} keyword.
+ */
 public class AddDeadlineCommand extends Command {
     private final String arguments;
     private Task deadlineTask;
 
+    /**
+     * Constructs an AddDeadlineCommand with the given arguments.
+     *
+     * @param arguments the raw arguments containing the task description
+     *                  and deadline date/time
+     */
     public AddDeadlineCommand(String arguments) {
         this.arguments = arguments;
     }
 
+    /**
+     * Executes the command by parsing the arguments, creating a deadline task,
+     * adding it to the task list, and saving it to storage.
+     *
+     * @param tasks   the task list to add the deadline to
+     * @param ui      the user interface for displaying messages
+     * @param storage the storage used to persist tasks
+     * @throws KeefException if the input format is invalid or parsing fails
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Validate arguments
@@ -51,6 +71,11 @@ public class AddDeadlineCommand extends Command {
         ui.printMessage(deadlineTask, tasks.getSize(), CommandType.ADD);
     }
 
+    /**
+     * Indicates whether this command exits the application.
+     *
+     * @return false since this command does not terminate the program
+     */
     @Override
     public boolean isExit() {
         return false;
