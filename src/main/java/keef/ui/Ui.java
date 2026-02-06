@@ -1,7 +1,5 @@
 package keef.ui;
 
-import java.util.Scanner;
-
 import keef.command.CommandType;
 import keef.task.Task;
 import keef.task.TaskList;
@@ -12,48 +10,16 @@ import keef.task.TaskList;
  * including task lists, errors, and system responses.
  */
 public class Ui {
-    private final Scanner sc;
-
     /**
      * Constructs an Ui object and initializes the input scanner.
      */
-    public Ui() {
-        sc = new Scanner(System.in);
-    }
-
-    /**
-     * Reads a line of input from the user.
-     *
-     * @return the full command typed by the user
-     */
-    public String readCommand() {
-        System.out.print("You: ");
-        return sc.nextLine();
-    }
+    public Ui() {}
 
     /**
      * Prints the welcome message to the user.
      */
-    public void showWelcome() {
-        drawHorizontalLine();
-        System.out.println("Hello! I'm Keef!\nWhat can I do for you? ~");
-        drawHorizontalLine();
-    }
-
-    /**
-     * Prints a goodbye message when the program exits.
-     */
-    public void showGoodbye() {
-        System.out.println("See ya soon! ~");
-    }
-
-    /**
-     * Prints a custom message to the console.
-     *
-     * @param message the message to display
-     */
-    public void showMessage(String message) {
-        System.out.println(message);
+    public String showWelcome() {
+        return "Hello! I'm Keef!\nWhat can I do for you? ~";
     }
 
     /**
@@ -61,33 +27,22 @@ public class Ui {
      *
      * @param tasks the TaskList to display
      */
-    public void printTasks(TaskList tasks) {
+    public String printTasks(TaskList tasks) {
         if (tasks.getSize() == 0) {
-            showMessage("You don't have any tasks yet. Start adding!");
-        } else {
-            showMessage("Here are the tasks in your list:");
-            for (int i = 0; i < tasks.getSize(); i++) {
-                showMessage(i + 1 + "." + " " + tasks.getTask(i));
-            }
+            return "You don't have any tasks yet. Start adding!";
         }
-    }
 
-    /**
-     * Prints a line indicating that Keef is replying,
-     * followed by a horizontal line.
-     */
-    public void botReply() {
-        drawHorizontalLine();
-        showMessage("Keef: ");
-    }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Here are the tasks in your list:\n");
 
-    /**
-     * Displays an error message to the user.
-     *
-     * @param message the error message to show
-     */
-    public void showError(String message) {
-        showMessage(message);
+        for (int i = 0; i < tasks.getSize(); i++) {
+            sb.append(i + 1)
+                    .append(". ")
+                    .append(tasks.getTask(i))
+                    .append("\n");
+        }
+
+        return sb.toString();
     }
 
     /**
@@ -97,7 +52,7 @@ public class Ui {
      * @param size the current size of the task list
      * @param type the type of command performed
      */
-    public void printMessage(Task task, int size, CommandType type) {
+    public String printMessage(Task task, int size, CommandType type) {
         //CHECKSTYLE.OFF: Indentation
         String pastTenseType = switch (type) {
             case ADD -> "added";
@@ -107,9 +62,9 @@ public class Ui {
             default -> "";
         };
         //CHECKSTYLE.ON: Indentation
-        showMessage("Got it. I've " + pastTenseType + " this task:");
-        showMessage(task.toString());
-        showMessage("Now you have " + size + " tasks in your list.");
+        return "Got it. I've " + pastTenseType + " this task:\n"
+                + task + "\n"
+                + "Now you have " + size + " tasks in your list.";
     }
 
     /**
@@ -121,23 +76,25 @@ public class Ui {
      *
      * @param tasks the {@code TaskList} containing tasks that match the search keyword
      */
-    public void printFoundTasks(TaskList tasks) {
+    public String printFoundTasks(TaskList tasks) {
         if (tasks.getSize() == 0) {
-            showMessage("No matching tasks found.");
-        } else {
-            showMessage("Here are the matching tasks in your list:");
-            for (int i = 0; i < tasks.getSize(); i++) {
-                showMessage((i + 1) + "." + " " + tasks.getTask(i));
-            }
-            showMessage("Found " + tasks.getSize() + " task(s).");
+            return "No matching tasks found.";
         }
-    }
 
-    /**
-     * Prints a horizontal line separator in the console.
-     */
-    public void drawHorizontalLine() {
-        int length = 50;
-        System.out.println("-".repeat(length));
+        StringBuilder sb = new StringBuilder();
+        sb.append("Here are the matching tasks in your list:\n");
+
+        for (int i = 0; i < tasks.getSize(); i++) {
+            sb.append(i + 1)
+                    .append(". ")
+                    .append(tasks.getTask(i))
+                    .append("\n");
+        }
+
+        sb.append("Found ")
+                .append(tasks.getSize())
+                .append(" task(s).");
+
+        return sb.toString();
     }
 }

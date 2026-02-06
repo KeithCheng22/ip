@@ -34,7 +34,7 @@ public class MarkCommand extends Command {
      * @throws KeefException if the task index is invalid or the task is already done
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Get the task to mark via the TaskIndex
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
         Task task = tasks.getTask(taskIndex - 1);
@@ -45,20 +45,10 @@ public class MarkCommand extends Command {
         }
 
         // Mark the task
-        tasks.markTask(task);
+        task.markAsDone();
 
         // Save and show message
-        storage.saveTasks();
-        ui.printMessage(task, tasks.getSize(), CommandType.MARK);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+        storage.saveTasks(tasks);
+        return ui.printMessage(task, tasks.getSize(), CommandType.MARK);
     }
 }

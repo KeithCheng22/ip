@@ -10,7 +10,6 @@ import keef.ui.Ui;
  * Each concrete command defines its own execution behavior.
  */
 public abstract class Command {
-
     /**
      * Executes the command.
      *
@@ -19,14 +18,5 @@ public abstract class Command {
      * @param storage the storage component for saving data
      * @throws KeefException if an error occurs during command execution
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException;
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    public boolean isExit() {
-        return false;
-    }
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException;
 }

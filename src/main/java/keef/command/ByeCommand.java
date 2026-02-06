@@ -1,5 +1,6 @@
 package keef.command;
 
+import javafx.stage.Stage;
 import keef.storage.Storage;
 import keef.task.TaskList;
 import keef.ui.Ui;
@@ -9,6 +10,11 @@ import keef.ui.Ui;
  * When executed, it displays a goodbye message to the user.
  */
 public class ByeCommand extends Command {
+    private final Stage stage;
+
+    public ByeCommand(Stage stage) {
+        this.stage = stage;
+    }
 
     /**
      * Executes the bye command by showing a goodbye message.
@@ -18,17 +24,12 @@ public class ByeCommand extends Command {
      * @param storage the storage component (unused for this command)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showGoodbye();
-    }
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        // Close the GUI window
+        if (stage != null) {
+            stage.close();
+        }
 
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return true since this command does terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return true; // this command exits the program
+        return "";
     }
 }

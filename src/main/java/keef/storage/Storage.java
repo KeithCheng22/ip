@@ -19,7 +19,6 @@ import keef.task.ToDo;
  */
 public class Storage {
     private final String filePath;
-    private final TaskList tasks;
 
     /**
      * Constructs a Storage object with the given file path.
@@ -29,7 +28,6 @@ public class Storage {
      */
     public Storage(String filePath) {
         this.filePath = filePath;
-        this.tasks = loadTasks();
     }
 
     /**
@@ -70,7 +68,7 @@ public class Storage {
 
                 // Mark task if it is done
                 if (task != null && isDone) {
-                    tasks.markTask(task);
+                    task.markAsDone();
                 }
 
                 // Add task if it is not null
@@ -90,7 +88,7 @@ public class Storage {
      * Each task is written in a pipe-separated format:
      * <code>Type | Status | Description | [Dates]</code>.
      */
-    public void saveTasks() {
+    public void saveTasks(TaskList tasks) {
         File dataFile = new File(filePath);
         try {
             File folder = dataFile.getParentFile();
@@ -101,6 +99,7 @@ public class Storage {
             }
 
             FileWriter writer = new FileWriter(dataFile);
+            System.out.println("Saving " + tasks.getSize() + " tasks");
 
             // Extract and write details about the task into the datafile
             for (Task task : tasks.getAllTasks()) {
@@ -122,9 +121,5 @@ public class Storage {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public TaskList getTasks() {
-        return tasks;
     }
 }

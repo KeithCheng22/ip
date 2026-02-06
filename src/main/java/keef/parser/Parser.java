@@ -1,5 +1,6 @@
 package keef.parser;
 
+import javafx.stage.Stage;
 import keef.command.AddDeadlineCommand;
 import keef.command.AddEventCommand;
 import keef.command.AddTodoCommand;
@@ -26,7 +27,7 @@ public class Parser {
      * @return the Command object corresponding to the user input
      * @throws KeefException if the command is invalid or unrecognized
      */
-    public static Command parse(String fullCommand) throws KeefException {
+    public static Command parse(String fullCommand, Stage stage) throws KeefException {
         // Split the command into its arguments
         String[] parts = fullCommand.trim().split(" ", 2);
         String commandWord = parts[0].toUpperCase();
@@ -37,7 +38,7 @@ public class Parser {
 
         //CHECKSTYLE.OFF: Indentation
         return switch (type) {
-        case BYE -> new ByeCommand();
+            case BYE -> new ByeCommand(stage);
             case LIST -> new ListCommand();
             case TODO -> new AddTodoCommand(arguments);
             case DEADLINE -> new AddDeadlineCommand(arguments);

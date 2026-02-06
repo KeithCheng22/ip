@@ -29,7 +29,7 @@ public enum CommandType {
         try {
             return CommandType.valueOf(commandType.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new KeefException("Keef: Huh, what do you mean?");
+            throw new KeefException("Huh, what do you mean?");
         }
     }
 }

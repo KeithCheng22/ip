@@ -1,5 +1,6 @@
 package keef;
 
+import javafx.stage.Stage;
 import keef.command.Command;
 import keef.exception.KeefException;
 import keef.parser.Parser;
@@ -33,36 +34,12 @@ public class Keef {
         }
     }
 
-    /**
-     * Runs the main interaction loop of the application.
-     *
-     * Continuously reads user commands, executes them, and displays responses
-     * until the user exits the application.
-     */
-    public void run() {
-        ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand();
-                Command command = Parser.parse(fullCommand);
-                ui.botReply();
-                command.execute(tasks, ui, storage);
-                isExit = command.isExit();
-            } catch (KeefException e) {
-                ui.showError(e.getMessage());
-            } finally {
-                ui.drawHorizontalLine();
-            }
+    public String getResponse(String input, Stage stage) {
+        try {
+            Command command = Parser.parse(input, stage);
+            return command.execute(tasks, ui, storage);
+        } catch (KeefException e) {
+            return e.getMessage();
         }
-    }
-
-    /**
-     * The entry point of the Keef application.
-     *
-     * @param args command-line arguments (not used)
-     */
-    public static void main(String[] args) {
-        new Keef("./data/keef.txt").run();
     }
 }

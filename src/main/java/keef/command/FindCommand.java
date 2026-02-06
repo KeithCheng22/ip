@@ -35,7 +35,7 @@ public class FindCommand extends Command {
      * @throws KeefException If the search keyword is empty
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Throw an exception is argument is empty
         if (arguments.isEmpty()) {
             throw new KeefException("Bro, you need to tell me what to find.");
@@ -52,16 +52,6 @@ public class FindCommand extends Command {
         }
 
         // Print all matching tasks
-        ui.printFoundTasks(matchingTasks);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return {@code false} since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+        return ui.printFoundTasks(matchingTasks);
     }
 }

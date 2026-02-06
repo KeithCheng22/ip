@@ -39,7 +39,7 @@ public class AddEventCommand extends Command {
      * @throws KeefException if required fields are missing or date parsing fails
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Validate arguments
         if (!arguments.contains("/from") || !arguments.contains("/to")) {
             throw new KeefException("Bro, you must include /from <start> and /to <end>.");
@@ -74,17 +74,7 @@ public class AddEventCommand extends Command {
         tasks.addTask(eventTask);
 
         // Save and show message
-        storage.saveTasks();
-        ui.printMessage(eventTask, tasks.getSize(), CommandType.ADD);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+        storage.saveTasks(tasks);
+        return ui.printMessage(eventTask, tasks.getSize(), CommandType.ADD);
     }
 }

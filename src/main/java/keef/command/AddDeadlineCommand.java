@@ -39,7 +39,7 @@ public class AddDeadlineCommand extends Command {
      * @throws KeefException if the input format is invalid or parsing fails
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Validate arguments
         if (!arguments.contains("/by")) {
             throw new KeefException("Bro, you must include /by <date>");
@@ -67,17 +67,7 @@ public class AddDeadlineCommand extends Command {
         tasks.addTask(deadlineTask);
 
         // Save and show message
-        storage.saveTasks();
-        ui.printMessage(deadlineTask, tasks.getSize(), CommandType.ADD);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+        storage.saveTasks(tasks);
+        return ui.printMessage(deadlineTask, tasks.getSize(), CommandType.ADD);
     }
 }

@@ -33,7 +33,7 @@ public class AddTodoCommand extends Command {
      * @throws KeefException if the task description is empty
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         if (description.isEmpty()) {
             throw new KeefException("Bro, you left out what exactly you wanted to do! "
                     + "Add something!");
@@ -44,17 +44,7 @@ public class AddTodoCommand extends Command {
         tasks.addTask(task);
 
         // Save and show message
-        storage.saveTasks();
-        ui.printMessage(task, tasks.getSize(), CommandType.ADD);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+        storage.saveTasks(tasks);
+        return ui.printMessage(task, tasks.getSize(), CommandType.ADD);
     }
 }
