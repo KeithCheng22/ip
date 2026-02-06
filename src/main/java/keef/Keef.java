@@ -39,7 +39,7 @@ public class Keef {
      * Continuously reads user commands, executes them, and displays responses
      * until the user exits the application.
      */
-    public void run(){
+    public void run() {
         ui.showWelcome();
         boolean isExit = false;
         while (!isExit) {

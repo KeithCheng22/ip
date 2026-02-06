@@ -12,7 +12,7 @@ public class TaskList {
     /**
      * Constructs an empty task list.
      */
-    public TaskList(){
+    public TaskList() {
         tasks = new ArrayList<>();
     }
 
@@ -21,7 +21,7 @@ public class TaskList {
      *
      * @param tasks the list of tasks to initialize with
      */
-    public TaskList(List<Task> tasks){
+    public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
     }
 
@@ -30,7 +30,7 @@ public class TaskList {
      *
      * @param task the task to be removed
      */
-    public void deleteTask(Task task){
+    public void deleteTask(Task task) {
         tasks.remove(task);
     }
 
@@ -39,7 +39,7 @@ public class TaskList {
      *
      * @param task the task to be added
      */
-    public void addTask(Task task){
+    public void addTask(Task task) {
         tasks.add(task);
     }
 
@@ -49,7 +49,7 @@ public class TaskList {
      * @param taskIndex the index of the task
      * @return the task at the given index
      */
-    public Task getTask(int taskIndex){
+    public Task getTask(int taskIndex) {
         return tasks.get(taskIndex);
     }
 
@@ -67,7 +67,7 @@ public class TaskList {
      *
      * @param task the task to mark as done
      */
-    public void markTask(Task task){
+    public void markTask(Task task) {
         task.markAsDone();
     }
 
@@ -76,7 +76,7 @@ public class TaskList {
      *
      * @param task the task to mark as not done
      */
-    public void unmarkTask(Task task){
+    public void unmarkTask(Task task) {
         task.markAsUndone();
     }
 
@@ -85,7 +85,7 @@ public class TaskList {
      *
      * @return the list of tasks
      */
-    public List<Task> getAllTasks(){
+    public List<Task> getAllTasks() {
         return tasks;
     }
 }

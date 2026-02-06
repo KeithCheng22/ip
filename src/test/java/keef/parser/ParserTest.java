@@ -1,10 +1,11 @@
 package keef.parser;
 
-import keef.exception.KeefException;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
+import keef.exception.KeefException;
 
 public class ParserTest {
 

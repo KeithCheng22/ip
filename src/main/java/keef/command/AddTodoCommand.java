@@ -34,8 +34,10 @@ public class AddTodoCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        if (description.isEmpty()) throw new KeefException("Bro, you left out what exactly you wanted to do! "
-                 + "Add something!");
+        if (description.isEmpty()) {
+            throw new KeefException("Bro, you left out what exactly you wanted to do! "
+                    + "Add something!");
+        }
 
         // Create the todo task
         Task task = new ToDo(description);

@@ -1,10 +1,10 @@
 package keef.ui;
 
+import java.util.Scanner;
+
+import keef.command.CommandType;
 import keef.task.Task;
 import keef.task.TaskList;
-import keef.command.CommandType;
-
-import java.util.Scanner;
 
 /**
  * Ui handles all interactions with the user via the console.
@@ -98,6 +98,7 @@ public class Ui {
      * @param type the type of command performed
      */
     public void printMessage(Task task, int size, CommandType type) {
+        //CHECKSTYLE.OFF: Indentation
         String pastTenseType = switch (type) {
             case ADD -> "added";
             case DELETE -> "deleted";
@@ -105,6 +106,7 @@ public class Ui {
             case UNMARK -> "unmarked";
             default -> "";
         };
+        //CHECKSTYLE.ON: Indentation
         showMessage("Got it. I've " + pastTenseType + " this task:");
         showMessage(task.toString());
         showMessage("Now you have " + size + " tasks in your list.");
