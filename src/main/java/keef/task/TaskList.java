@@ -63,24 +63,6 @@ public class TaskList {
     }
 
     /**
-     * Marks the specified task as completed.
-     *
-     * @param task the task to mark as done
-     */
-    public void markTask(Task task) {
-        task.markAsDone();
-    }
-
-    /**
-     * Marks the specified task as not completed.
-     *
-     * @param task the task to mark as not done
-     */
-    public void unmarkTask(Task task) {
-        task.markAsUndone();
-    }
-
-    /**
      * Returns all tasks in the list.
      *
      * @return the list of tasks

@@ -18,17 +18,7 @@ public class ListCommand extends Command {
      * @param storage the storage handler (not used in this command)
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.printTasks(tasks);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        return ui.printTasks(tasks);
     }
 }

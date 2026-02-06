@@ -39,7 +39,7 @@ public class TaskListTest {
         Task todo = new ToDo("Read book");
 
         taskList.addTask(todo);
-        taskList.markTask(todo);
+        todo.markAsDone();
 
         assertTrue(todo.isDone());
     }
@@ -50,10 +50,10 @@ public class TaskListTest {
         Task todo = new ToDo("Write essay");
 
         taskList.addTask(todo);
-        taskList.markTask(todo);
+        todo.markAsDone();
         assertTrue(todo.isDone());
 
-        taskList.unmarkTask(todo);
+        todo.markAsUndone();
         assertFalse(todo.isDone());
     }
 }

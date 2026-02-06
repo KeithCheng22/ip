@@ -33,7 +33,7 @@ public class DeleteCommand extends Command {
      * @throws KeefException if the task index is invalid or out of bounds
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
         // Get the task to delete via the TaskIndex
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
         Task task = tasks.getTask(taskIndex - 1);
@@ -42,17 +42,7 @@ public class DeleteCommand extends Command {
         tasks.deleteTask(task);
 
         // Save and show message
-        storage.saveTasks();
-        ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
-    }
-
-    /**
-     * Indicates whether this command exits the application.
-     *
-     * @return false since this command does not terminate the program
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+        storage.saveTasks(tasks);
+        return ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
     }
 }
