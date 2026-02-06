@@ -1,16 +1,16 @@
 package keef.storage;
 
-import keef.task.Deadline;
-import keef.task.Event;
-import keef.task.Task;
-import keef.task.TaskList;
-import keef.task.ToDo;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+
+import keef.task.Deadline;
+import keef.task.Event;
+import keef.task.Task;
+import keef.task.TaskList;
+import keef.task.ToDo;
 
 /**
  * Storage handles loading and saving tasks to a persistent file.
@@ -60,10 +60,12 @@ public class Storage {
                 String type = parts[0];
                 boolean isDone = parts[1].equals("1");
                 Task task = switch (type) {
+                    //CHECKSTYLE.OFF: Indentation
                     case "T" -> new ToDo(parts[2]);
                     case "D" -> new Deadline(parts[2], LocalDateTime.parse(parts[3]));
-                    case "E" -> new Event(parts[2],  LocalDateTime.parse(parts[3]),  LocalDateTime.parse(parts[3]));
+                    case "E" -> new Event(parts[2], LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[3]));
                     default -> null;
+                    //CHECKSTYLE.ON: Indentation
                 };
 
                 // Mark task if it is done

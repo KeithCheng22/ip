@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
  * Extends the {@link Task} class.
  */
 public class Deadline extends Task {
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");
     private final LocalDateTime by;
 
     /**
@@ -29,8 +30,6 @@ public class Deadline extends Task {
     public LocalDateTime getBy() {
         return by;
     }
-
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");
 
     /**
      * Returns a string representation of the task for display purposes.

@@ -1,6 +1,16 @@
 package keef.parser;
 
-import keef.command.*;
+import keef.command.AddDeadlineCommand;
+import keef.command.AddEventCommand;
+import keef.command.AddTodoCommand;
+import keef.command.ByeCommand;
+import keef.command.Command;
+import keef.command.CommandType;
+import keef.command.DeleteCommand;
+import keef.command.FindCommand;
+import keef.command.ListCommand;
+import keef.command.MarkCommand;
+import keef.command.UnmarkCommand;
 import keef.exception.KeefException;
 
 /**
@@ -25,8 +35,9 @@ public class Parser {
         // Get the command type to execute
         CommandType type = CommandType.fromString(commandWord);
 
+        //CHECKSTYLE.OFF: Indentation
         return switch (type) {
-            case BYE -> new ByeCommand();
+        case BYE -> new ByeCommand();
             case LIST -> new ListCommand();
             case TODO -> new AddTodoCommand(arguments);
             case DEADLINE -> new AddDeadlineCommand(arguments);
@@ -37,6 +48,7 @@ public class Parser {
             case FIND -> new FindCommand(arguments);
             default -> throw new KeefException("Huh, what do you mean?");
         };
+        //CHECKSTYLE.ON: Indentation
     }
 
     /**
@@ -47,7 +59,7 @@ public class Parser {
      * @return the parsed task index as an integer
      * @throws KeefException if the string is not a valid number or is out of bounds
      */
-    public static int parseTaskIndex (String arguments, int max) throws KeefException {
+    public static int parseTaskIndex(String arguments, int max) throws KeefException {
         int taskIndex;
         try {
             taskIndex = Integer.parseInt(arguments.trim());
