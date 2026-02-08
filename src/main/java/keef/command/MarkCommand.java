@@ -35,7 +35,6 @@ public class MarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        // Get the task to mark via the TaskIndex
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
         Task task = tasks.getTask(taskIndex - 1);
 
@@ -44,10 +43,8 @@ public class MarkCommand extends Command {
             throw new KeefException("You are already done with this task!");
         }
 
-        // Mark the task
         task.markAsDone();
 
-        // Save and show message
         storage.saveTasks(tasks);
         return ui.printMessage(task, tasks.getSize(), CommandType.MARK);
     }

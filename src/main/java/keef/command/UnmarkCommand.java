@@ -35,7 +35,6 @@ public class UnmarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        // Get the task to unmark via the TaskIndex
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
         Task task = tasks.getTask(taskIndex - 1);
 
@@ -44,10 +43,8 @@ public class UnmarkCommand extends Command {
             throw new KeefException("You didn't mark this task to begin with!");
         }
 
-        // Unmark the task
         task.markAsUndone();
 
-        // Save and show message
         storage.saveTasks(tasks);
         return ui.printMessage(task, tasks.getSize(), CommandType.UNMARK);
     }

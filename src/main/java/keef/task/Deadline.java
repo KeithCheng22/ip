@@ -1,14 +1,12 @@
 package keef.task;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a task that has a deadline.
  * Extends the {@link Task} class.
  */
 public class Deadline extends Task {
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");
     private final LocalDateTime by;
 
     /**
@@ -29,6 +27,19 @@ public class Deadline extends Task {
      */
     public LocalDateTime getBy() {
         return by;
+    }
+
+    /**
+     * Returns a string representation of this Deadline for storage.
+     *
+     * <p>Format: D | status | description | by
+     * where status is "1" if done, "0" otherwise, and by is formatted using {@link #STORAGE_FORMAT}.</p>
+     *
+     * @return storage-friendly string for this Deadline
+     */
+    @Override
+    public String toStorageString() {
+        return "D | " + (isDone() ? "1" : "0") + " | " + getDescription() + " | " + getBy().format(STORAGE_FORMAT);
     }
 
     /**
