@@ -1,5 +1,8 @@
 package keef.ui;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import keef.command.CommandType;
 import keef.task.Task;
 import keef.task.TaskList;
@@ -83,15 +86,10 @@ public class Ui {
      * @return a formatted numbered string of tasks
      */
     private String formatTaskList(TaskList tasks, String header) {
-        StringBuilder sb = new StringBuilder(header);
+        String taskBody = IntStream.range(0, tasks.getSize())
+                .mapToObj(i -> (i + 1) + ". " + tasks.getTask(i))
+                .collect(Collectors.joining("\n"));
 
-        for (int i = 0; i < tasks.getSize(); i++) {
-            sb.append(i + 1)
-                    .append(". ")
-                    .append(tasks.getTask(i))
-                    .append("\n");
-        }
-
-        return sb.toString();
+        return header + taskBody + "\n";
     }
 }

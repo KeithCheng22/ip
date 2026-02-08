@@ -51,7 +51,6 @@ public class Storage {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 String[] parts = line.split("\\|");
-                
                 for (int i = 0; i < parts.length; i++) {
                     parts[i] = parts[i].trim();
                 }
@@ -109,7 +108,6 @@ public class Storage {
         File dataFile = new File(filePath);
         try {
             File folder = dataFile.getParentFile();
-            
             if (!folder.exists()) {
                 folder.mkdirs();
             }
