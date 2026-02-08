@@ -71,7 +71,11 @@ public class AddEventCommand extends Command {
 
         // Create the event task
         eventTask = new Event(description, from, to);
+
+        int before = tasks.getSize();
         tasks.addTask(eventTask);
+        assert eventTask != null : "Event Task should be created successfully";
+        assert tasks.getSize() == before + 1 : "Task list size should increase by 1";
 
         // Save and show message
         storage.saveTasks(tasks);
