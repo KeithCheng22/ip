@@ -49,6 +49,11 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+
+        if (input.isEmpty()) {
+            return;
+        }
+
         Stage stage = (Stage) scrollPane.getScene().getWindow();
 
         String response = keef.getResponse(input, stage);
