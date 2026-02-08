@@ -1,7 +1,6 @@
 package keef.command;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import keef.exception.KeefException;
 import keef.storage.Storage;
@@ -17,7 +16,6 @@ import keef.ui.Ui;
  */
 public class AddEventCommand extends Command {
     private final String arguments;
-    private Task eventTask;
 
     /**
      * Constructs an AddEventCommand with the given arguments.
@@ -40,7 +38,6 @@ public class AddEventCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        // Validate arguments
         if (!arguments.contains("/from") || !arguments.contains("/to")) {
             throw new KeefException("Bro, you must include /from <start> and /to <end>.");
         }
@@ -58,26 +55,22 @@ public class AddEventCommand extends Command {
             throw new KeefException("Bro, the event description, start, and end cannot be empty!");
         }
 
-        // Parse the dates
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
         LocalDateTime from;
         LocalDateTime to;
         try {
-            from = LocalDateTime.parse(dateFromString, formatter);
-            to = LocalDateTime.parse(dateToString, formatter);
+            from = LocalDateTime.parse(dateFromString, Task.STORAGE_FORMAT);
+            to = LocalDateTime.parse(dateToString, Task.STORAGE_FORMAT);
         } catch (Exception e) {
             throw new KeefException("Use date format: d/M/yyyy HHmm");
         }
 
-        // Create the event task
-        eventTask = new Event(description, from, to);
+        Task eventTask = new Event(description, from, to);
 
         int before = tasks.getSize();
         tasks.addTask(eventTask);
         assert eventTask != null : "Event Task should be created successfully";
         assert tasks.getSize() == before + 1 : "Task list size should increase by 1";
 
-        // Save and show message
         storage.saveTasks(tasks);
         return ui.printMessage(eventTask, tasks.getSize(), CommandType.ADD);
     }

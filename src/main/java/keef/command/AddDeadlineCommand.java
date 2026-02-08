@@ -1,7 +1,6 @@
 package keef.command;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import keef.exception.KeefException;
 import keef.storage.Storage;
@@ -17,7 +16,6 @@ import keef.ui.Ui;
  */
 public class AddDeadlineCommand extends Command {
     private final String arguments;
-    private Task deadlineTask;
 
     /**
      * Constructs an AddDeadlineCommand with the given arguments.
@@ -40,7 +38,6 @@ public class AddDeadlineCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        // Validate arguments
         if (!arguments.contains("/by")) {
             throw new KeefException("Bro, you must include /by <date>");
         }
@@ -53,24 +50,20 @@ public class AddDeadlineCommand extends Command {
             throw new KeefException("Bro, the description and date can't be empty!");
         }
 
-        // Parse the date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
         LocalDateTime by;
         try {
-            by = LocalDateTime.parse(dateString, formatter);
+            by = LocalDateTime.parse(dateString, Task.STORAGE_FORMAT);
         } catch (Exception e) {
             throw new KeefException("Use date format: d/M/yyyy HHmm");
         }
 
-        // Create the deadline task
-        deadlineTask = new Deadline(description, by);
+        Task deadlineTask = new Deadline(description, by);
 
         int before = tasks.getSize();
         tasks.addTask(deadlineTask);
         assert deadlineTask != null : "Deadline Task should be created successfully";
         assert tasks.getSize() == before + 1 : "Task list size should increase by 1";
 
-        // Save and show message
         storage.saveTasks(tasks);
         return ui.printMessage(deadlineTask, tasks.getSize(), CommandType.ADD);
     }

@@ -49,43 +49,16 @@ public class Storage {
 
         try (Scanner sc = new Scanner(dataFile)) {
             while (sc.hasNextLine()) {
-                // Read each task in the datafile
                 String line = sc.nextLine();
                 String[] parts = line.split("\\|");
-
+                
                 for (int i = 0; i < parts.length; i++) {
                     parts[i] = parts[i].trim();
                 }
 
                 // Get the details of each task
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
-                Task task = switch (type) {
-                    //CHECKSTYLE.OFF: Indentation
-                    case "T" -> {
-                        assert parts.length == 3 : "ToDo should have exactly 3 fields";
-                        yield new ToDo(parts[2]);
-                    }
-                    case "D" -> {
-                        assert parts.length == 4 : "Deadline should have exactly 4 fields";
-                        yield new Deadline(parts[2], LocalDateTime.parse(parts[3]));
-                    }
-                    case "E" -> {
-                        assert parts.length == 5 : "Event should have exactly 5 fields";
-                        yield new Event(parts[2],
-                                LocalDateTime.parse(parts[3]),
-                                LocalDateTime.parse(parts[4]));
-                    }
-                    default -> null;
-                    //CHECKSTYLE.ON: Indentation
-                };
+                Task task = getTask(parts);
 
-                // Mark task if it is done
-                if (task != null && isDone) {
-                    task.markAsDone();
-                }
-
-                // Add task if it is not null
                 if (task != null) {
                     tasks.addTask(task);
                 }
@@ -97,6 +70,36 @@ public class Storage {
         return tasks;
     }
 
+    private static Task getTask(String[] parts) {
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        Task task = switch (type) {
+            //CHECKSTYLE.OFF: Indentation
+            case "T" -> {
+                assert parts.length == 3 : "ToDo should have exactly 3 fields";
+                yield new ToDo(parts[2]);
+            }
+            case "D" -> {
+                assert parts.length == 4 : "Deadline should have exactly 4 fields";
+                yield new Deadline(parts[2], LocalDateTime.parse(parts[3]));
+            }
+            case "E" -> {
+                assert parts.length == 5 : "Event should have exactly 5 fields";
+                yield new Event(parts[2],
+                        LocalDateTime.parse(parts[3]),
+                        LocalDateTime.parse(parts[4]));
+            }
+            default -> null;
+            //CHECKSTYLE.ON: Indentation
+        };
+
+        // Mark task if it is done
+        if (task != null && isDone) {
+            task.markAsDone();
+        }
+        return task;
+    }
+
     /**
      * Saves all tasks in the TaskList to the data file.
      * Each task is written in a pipe-separated format:
@@ -106,30 +109,17 @@ public class Storage {
         File dataFile = new File(filePath);
         try {
             File folder = dataFile.getParentFile();
-
-            // Create a new folder if it does not exist
+            
             if (!folder.exists()) {
                 folder.mkdirs();
             }
 
             FileWriter writer = new FileWriter(dataFile);
 
-            // Extract and write details about the task into the datafile
             for (Task task : tasks.getAllTasks()) {
-                String line = "";
-                if (task instanceof ToDo) {
-                    line = "T | " + (task.isDone() ? "1" : "0") + " | " + task.getDescription();
-                } else if (task instanceof Deadline) {
-                    Deadline d = (Deadline) task;
-                    line = "D | " + (d.isDone() ? "1" : "0") + " | " + d.getDescription() + " | " + d.getBy();
-                } else if (task instanceof Event) {
-                    Event e = (Event) task;
-                    line = "E | " + (e.isDone() ? "1" : "0") + " | " + e.getDescription() + " | "
-                            + e.getFrom() + " | " + e.getTo();
-                }
-
-                writer.write(line + System.lineSeparator());
+                writer.write(task.toStorageString() + System.lineSeparator());
             }
+
             writer.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());

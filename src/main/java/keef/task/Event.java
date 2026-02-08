@@ -1,14 +1,12 @@
 package keef.task;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an event task with a start and end time.
  * Extends the {@link Task} class.
  */
 public class Event extends Task {
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");
     private final LocalDateTime from;
     private final LocalDateTime to;
 
@@ -40,6 +38,21 @@ public class Event extends Task {
      */
     public LocalDateTime getTo() {
         return to;
+    }
+
+    /**
+     * Returns a string representation of this Event for storage.
+     *
+     * <p>Format: E | status | description | from | to
+     * where status is "1" if done, "0" otherwise, and from/to are formatted
+     * using {@link #STORAGE_FORMAT}.</p>
+     *
+     * @return storage-friendly string for this Event
+     */
+    @Override
+    public String toStorageString() {
+        return "E | " + (isDone() ? "1" : "0") + " | " + getDescription() + " | "
+                + getFrom().format(STORAGE_FORMAT) + " | " + getTo().format(STORAGE_FORMAT);
     }
 
     /**
