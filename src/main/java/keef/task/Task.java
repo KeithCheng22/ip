@@ -1,10 +1,16 @@
 package keef.task;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a generic task with a description and completion status.
  * This class serves as the base class for all specific task types.
  */
 public abstract class Task {
+    public static final DateTimeFormatter OUTPUT_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");
+    public static final DateTimeFormatter STORAGE_FORMAT =
+            DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
     private final String description;
     private boolean isDone;
 
@@ -58,6 +64,8 @@ public abstract class Task {
     public String getDescription() {
         return description;
     }
+
+    public abstract String toStorageString();
 
     /**
      * Returns a string representation of the task for display.

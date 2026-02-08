@@ -32,17 +32,7 @@ public class Ui {
             return "You don't have any tasks yet. Start adding!";
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Here are the tasks in your list:\n");
-
-        for (int i = 0; i < tasks.getSize(); i++) {
-            sb.append(i + 1)
-                    .append(". ")
-                    .append(tasks.getTask(i))
-                    .append("\n");
-        }
-
-        return sb.toString();
+        return formatTaskList(tasks, "Here are the tasks in your list:\n");
     }
 
     /**
@@ -81,8 +71,19 @@ public class Ui {
             return "No matching tasks found.";
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Here are the matching tasks in your list:\n");
+        return formatTaskList(tasks, "Here are the matching tasks in your list:\n")
+                + "Found " + tasks.getSize() + " task(s).";
+    }
+
+    /**
+     * Formats a TaskList into a numbered list string.
+     *
+     * @param tasks the TaskList to format
+     * @param header a string to prepend to the task list (e.g., a message)
+     * @return a formatted numbered string of tasks
+     */
+    private String formatTaskList(TaskList tasks, String header) {
+        StringBuilder sb = new StringBuilder(header);
 
         for (int i = 0; i < tasks.getSize(); i++) {
             sb.append(i + 1)
@@ -90,10 +91,6 @@ public class Ui {
                     .append(tasks.getTask(i))
                     .append("\n");
         }
-
-        sb.append("Found ")
-                .append(tasks.getSize())
-                .append(" task(s).");
 
         return sb.toString();
     }

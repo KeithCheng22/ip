@@ -39,7 +39,6 @@ public class AddTodoCommand extends Command {
                     + "Add something!");
         }
 
-        // Create the todo task
         Task task = new ToDo(description);
 
         int before = tasks.getSize();
@@ -47,7 +46,6 @@ public class AddTodoCommand extends Command {
         assert task != null : "ToDo Task should be created successfully";
         assert tasks.getSize() == before + 1 : "Task list size should increase by 1";
 
-        // Save and show message
         storage.saveTasks(tasks);
         return ui.printMessage(task, tasks.getSize(), CommandType.ADD);
     }

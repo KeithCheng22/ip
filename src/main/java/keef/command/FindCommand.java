@@ -36,12 +36,10 @@ public class FindCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        // Throw an exception is argument is empty
         if (arguments.isEmpty()) {
             throw new KeefException("Bro, you need to tell me what to find.");
         }
 
-        // Filter the tasks that contain the argument keyword
         TaskList matchingTasks = new TaskList();
 
         for (Task task : tasks.getAllTasks()) {
@@ -51,7 +49,6 @@ public class FindCommand extends Command {
             }
         }
 
-        // Print all matching tasks
         return ui.printFoundTasks(matchingTasks);
     }
 }
