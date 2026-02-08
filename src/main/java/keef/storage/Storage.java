@@ -27,6 +27,9 @@ public class Storage {
      * @param filePath the path to the file used for storing tasks
      */
     public Storage(String filePath) {
+        assert filePath != null : "File path should not be null";
+        assert !filePath.isBlank() : "File path should not be blank";
+
         this.filePath = filePath;
     }
 
@@ -59,9 +62,20 @@ public class Storage {
                 boolean isDone = parts[1].equals("1");
                 Task task = switch (type) {
                     //CHECKSTYLE.OFF: Indentation
-                    case "T" -> new ToDo(parts[2]);
-                    case "D" -> new Deadline(parts[2], LocalDateTime.parse(parts[3]));
-                    case "E" -> new Event(parts[2], LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[3]));
+                    case "T" -> {
+                        assert parts.length == 3 : "ToDo should have exactly 3 fields";
+                        yield new ToDo(parts[2]);
+                    }
+                    case "D" -> {
+                        assert parts.length == 4 : "Deadline should have exactly 4 fields";
+                        yield new Deadline(parts[2], LocalDateTime.parse(parts[3]));
+                    }
+                    case "E" -> {
+                        assert parts.length == 5 : "Event should have exactly 5 fields";
+                        yield new Event(parts[2],
+                                LocalDateTime.parse(parts[3]),
+                                LocalDateTime.parse(parts[4]));
+                    }
                     default -> null;
                     //CHECKSTYLE.ON: Indentation
                 };
@@ -99,7 +113,6 @@ public class Storage {
             }
 
             FileWriter writer = new FileWriter(dataFile);
-            System.out.println("Saving " + tasks.getSize() + " tasks");
 
             // Extract and write details about the task into the datafile
             for (Task task : tasks.getAllTasks()) {

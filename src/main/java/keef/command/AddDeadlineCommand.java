@@ -64,7 +64,11 @@ public class AddDeadlineCommand extends Command {
 
         // Create the deadline task
         deadlineTask = new Deadline(description, by);
+
+        int before = tasks.getSize();
         tasks.addTask(deadlineTask);
+        assert deadlineTask != null : "Deadline Task should be created successfully";
+        assert tasks.getSize() == before + 1 : "Task list size should increase by 1";
 
         // Save and show message
         storage.saveTasks(tasks);
