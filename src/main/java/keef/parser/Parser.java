@@ -28,10 +28,14 @@ public class Parser {
      * @throws KeefException if the command is invalid or unrecognized
      */
     public static Command parse(String fullCommand, Stage stage) throws KeefException {
+        assert fullCommand != null : "Full command should not be null";
+
         // Split the command into its arguments
         String[] parts = fullCommand.trim().split(" ", 2);
         String commandWord = parts[0].toUpperCase();
         String arguments = parts.length > 1 ? parts[1] : "";
+
+        assert !commandWord.isBlank() : "Command word should not be blank";
 
         // Get the command type to execute
         CommandType type = CommandType.fromString(commandWord);
@@ -61,6 +65,9 @@ public class Parser {
      * @throws KeefException if the string is not a valid number or is out of bounds
      */
     public static int parseTaskIndex(String arguments, int max) throws KeefException {
+        assert arguments != null : "Arguments should not be null";
+        assert max >= 0 : "Max task count should not be negative";
+
         int taskIndex;
         try {
             taskIndex = Integer.parseInt(arguments.trim());
