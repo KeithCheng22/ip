@@ -1,5 +1,7 @@
 package keef.command;
 
+import java.util.List;
+
 import keef.exception.KeefException;
 import keef.parser.Parser;
 import keef.storage.Storage;
@@ -35,17 +37,36 @@ public class MarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
-        Task task = tasks.getTask(taskIndex - 1);
+        List<Integer> taskIndices = Parser.parseTaskIndices(arguments, tasks.getSize());
 
-        // Throw exception if task is already marked as done
-        if (task.isDone()) {
-            throw new KeefException("You are already done with this task!");
+        StringBuilder markedMsg = new StringBuilder("Got it! I've marked:\n");
+        StringBuilder skippedMsg = new StringBuilder();
+
+        int markedCount = 0;
+
+        for (Integer taskIndex : taskIndices) {
+            Task task = tasks.getTask(taskIndex - 1);
+
+            if (!task.isDone()) {
+                task.markAsDone();
+                markedMsg.append(task).append("\n");
+                markedCount++;
+            } else {
+                skippedMsg.append(task).append("\n");
+            }
         }
 
-        task.markAsDone();
+        if (markedCount == 0) {
+            throw new KeefException("All selected tasks are already done!");
+        }
 
         storage.saveTasks(tasks);
-        return ui.printMessage(task, tasks.getSize(), CommandType.MARK);
+
+        if (!skippedMsg.isEmpty()) {
+            markedMsg.append("\nNote: The following tasks were already done and skipped:\n")
+                    .append(skippedMsg);
+        }
+
+        return markedMsg.toString();
     }
 }

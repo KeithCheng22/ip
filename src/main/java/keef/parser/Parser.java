@@ -1,5 +1,12 @@
 package keef.parser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.IntStream;
+
 import javafx.stage.Stage;
 import keef.command.AddDeadlineCommand;
 import keef.command.AddEventCommand;
@@ -34,7 +41,7 @@ public class Parser {
     public static Command parse(String fullCommand, Stage stage) throws KeefException {
         assert fullCommand != null : "Full command should not be null";
 
-        String[] commandParts = fullCommand.trim().split(" ", 2);
+        String[] commandParts = fullCommand.trim().split(" ");
 
         String commandWord = extractCommandWord(commandParts);
         String arguments = extractArguments(commandParts);
@@ -54,6 +61,7 @@ public class Parser {
         assert commandParts.length > 0 : "Command parts should have at least one element";
         String commandWord = commandParts[0].toUpperCase();
         assert !commandWord.isBlank() : "Command word should not be blank";
+
         return commandWord;
     }
 
@@ -64,7 +72,11 @@ public class Parser {
      * @return the arguments string, or empty if none
      */
     private static String extractArguments(String[] commandParts) {
-        return commandParts.length > 1 ? commandParts[1] : "";
+        if (commandParts.length <= 1) {
+            return "";
+        }
+
+        return String.join(" ", Arrays.copyOfRange(commandParts, 1, commandParts.length));
     }
 
     /**
@@ -94,26 +106,106 @@ public class Parser {
     }
 
     /**
-     * Parses a string representing a task index and validates it against the maximum allowed.
+     * Parses a string representing one or more task indices and validates them
+     * against the maximum allowed task count.
      *
-     * @param arguments the string containing the task index
-     * @param max the maximum allowed task index
-     * @return the parsed task index as an integer
+     * <p>The input string can contain:</p>
+     * <ul>
+     *     <li>A single task number, e.g., "3"</li>
+     *     <li>Multiple space-separated numbers, e.g., "1 2 5"</li>
+     *     <li>Ranges of numbers using a dash, e.g., "3-6"</li>
+     *     <li>The keyword "all" to select all tasks from 1 to {@code maxTaskCount}</li>
+     * </ul>
+     *
+     * <p>Duplicates are automatically removed and the returned list is sorted
+     * in ascending order.</p>
+     *
+     * @param arguments the string containing task indices, ranges, or "all"
+     * @param maxTaskCount the maximum valid task index (i.e., the number of tasks in the list)
+     * @return a list of valid task indices
+     * @throws KeefException if any number is invalid, out of bounds, or if a range is malformed
+     */
+    public static List<Integer> parseTaskIndices(String arguments, int maxTaskCount) throws KeefException {
+        assert arguments != null : "Arguments should not be null";
+        assert maxTaskCount >= 0 : "Max task count should not be negative";
+
+        arguments = arguments.trim();
+        if (arguments.equalsIgnoreCase("all")) {
+            return new ArrayList<>(IntStream.rangeClosed(1, maxTaskCount).boxed().toList());
+        }
+
+        Set<Integer> indices = new TreeSet<>();
+
+        for (String token : arguments.split(" ")) {
+            indices.addAll(parseToken(token, maxTaskCount));
+        }
+
+        return new ArrayList<>(indices);
+    }
+
+    /**
+     * Parses a single token from the arguments, which can be either a single
+     * number or a range (e.g., "3" or "5-7").
+     *
+     * @param token a single space-separated token from the arguments
+     * @param maxTaskCount the maximum valid task index
+     * @return a list of integers represented by the token
+     * @throws KeefException if the token is not a valid number or range
+     */
+    private static List<Integer> parseToken(String token, int maxTaskCount) throws KeefException {
+        token = token.trim();
+
+        if (token.contains("-")) {
+            return parseRange(token, maxTaskCount);
+        }
+
+        return List.of(parseSingleIndex(token, maxTaskCount));
+    }
+
+    /**
+     * Parses a range of task indices in the form "start-end".
+     *
+     * @param range a string representing a range, e.g., "2-5"
+     * @param maxTaskCount the maximum valid task index
+     * @return a list of integers from start to end, inclusive
+     * @throws KeefException if the range is malformed, out of bounds, or start > end
+     */
+    private static List<Integer> parseRange(String range, int maxTaskCount) throws KeefException {
+        String[] parts = range.split("-");
+
+        if (parts.length != 2) {
+            throw new KeefException("Invalid range: " + range);
+        }
+
+        int start = parseSingleIndex(parts[0], maxTaskCount);
+        int end = parseSingleIndex(parts[1], maxTaskCount);
+
+        if (start > end) {
+            throw new KeefException("Invalid range: " + range);
+        }
+
+        return IntStream.rangeClosed(start, end).boxed().toList();
+    }
+
+    /**
+     * Parses a single task index and validates that it falls within
+     * the allowed range of 1 to {@code max}.
+     *
+     * @param arg the string representing a single task index
+     * @param max the maximum valid task index
+     * @return the parsed task index
      * @throws KeefException if the string is not a valid number or is out of bounds
      */
-    public static int parseTaskIndex(String arguments, int max) throws KeefException {
-        assert arguments != null : "Arguments should not be null";
-        assert max >= 0 : "Max task count should not be negative";
-
+    private static int parseSingleIndex(String arg, int max) throws KeefException {
         int taskIndex;
+
         try {
-            taskIndex = Integer.parseInt(arguments.trim());
+            taskIndex = Integer.parseInt(arg);
         } catch (NumberFormatException e) {
             throw new KeefException("Uhm bro, that's not a valid task number!");
         }
 
-        boolean isOutOfBounds = taskIndex <= 0 || taskIndex > max;
-        if (isOutOfBounds) {
+        if (taskIndex <= 0 || taskIndex > max) {
             throw new KeefException("Uhm bro, you only have " + max + " task(s) in your list.");
         }
 
