@@ -1,11 +1,14 @@
 package keef.command;
 
+import java.util.List;
+
 import keef.exception.KeefException;
 import keef.parser.Parser;
 import keef.storage.Storage;
 import keef.task.Task;
 import keef.task.TaskList;
 import keef.ui.Ui;
+
 
 /**
  * Represents a command to unmark a task as not done.
@@ -35,17 +38,36 @@ public class UnmarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
-        Task task = tasks.getTask(taskIndex - 1);
+        List<Integer> taskIndices = Parser.parseTaskIndices(arguments, tasks.getSize());
 
-        // Throw exception if task is already marked as done
-        if (!task.isDone()) {
-            throw new KeefException("You didn't mark this task to begin with!");
+        StringBuilder unmarkedMsg = new StringBuilder("Got it! I've unmarked:\n");
+        StringBuilder skippedMsg = new StringBuilder();
+
+        int unmarkedCount = 0;
+
+        for (Integer taskIndex : taskIndices) {
+            Task task = tasks.getTask(taskIndex - 1);
+
+            if (task.isDone()) {
+                task.markAsUndone();
+                unmarkedMsg.append(task).append("\n");
+                unmarkedCount++;
+            } else {
+                skippedMsg.append(task).append("\n");
+            }
         }
 
-        task.markAsUndone();
+        if (unmarkedCount == 0) {
+            throw new KeefException("All selected tasks are already unmarked!");
+        }
 
         storage.saveTasks(tasks);
-        return ui.printMessage(task, tasks.getSize(), CommandType.UNMARK);
+
+        if (!skippedMsg.isEmpty()) {
+            unmarkedMsg.append("\nNote: The following tasks were already unmarked and skipped:\n")
+                    .append(skippedMsg);
+        }
+
+        return unmarkedMsg.toString();
     }
 }

@@ -1,5 +1,8 @@
 package keef.command;
 
+import java.util.Comparator;
+import java.util.List;
+
 import keef.exception.KeefException;
 import keef.parser.Parser;
 import keef.storage.Storage;
@@ -34,12 +37,20 @@ public class DeleteCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KeefException {
-        int taskIndex = Parser.parseTaskIndex(arguments, tasks.getSize());
-        Task task = tasks.getTask(taskIndex - 1);
+        List<Integer> taskIndices = Parser.parseTaskIndices(arguments, tasks.getSize());
 
-        tasks.deleteTask(task);
+        // Delete in reverse order to avoid index shifting
+        taskIndices.sort(Comparator.reverseOrder());
+
+        StringBuilder message = new StringBuilder("Got it! Deleted tasks:\n");
+
+        for (Integer taskIndex : taskIndices) {
+            Task task = tasks.getTask(taskIndex - 1);
+            tasks.deleteTask(task);
+            message.append(task).append("\n");
+        }
 
         storage.saveTasks(tasks);
-        return ui.printMessage(task, tasks.getSize(), CommandType.DELETE);
+        return message.toString();
     }
 }
