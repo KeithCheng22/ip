@@ -41,7 +41,9 @@ public class Parser {
     public static Command parse(String fullCommand, Stage stage) throws KeefException {
         assert fullCommand != null : "Full command should not be null";
 
-        String[] commandParts = fullCommand.trim().split(" ");
+        // Used ChatGPT to explore improvements to string splitting.
+        // Adopted "\\s+" to correctly handle multiple spaces in user input.
+        String[] commandParts = fullCommand.trim().split("\\s+");
 
         String commandWord = extractCommandWord(commandParts);
         String arguments = extractArguments(commandParts);
@@ -129,6 +131,12 @@ public class Parser {
         assert arguments != null : "Arguments should not be null";
         assert maxTaskCount >= 0 : "Max task count should not be negative";
 
+        // Used ChatGPT to identify edge cases where arguments may be blank and
+        // added validation to throw an exception if no task numbers are provided.
+        if (arguments.isBlank()) {
+            throw new KeefException("Please specify task number(s).");
+        }
+
         arguments = arguments.trim();
         if (arguments.equalsIgnoreCase("all")) {
             return new ArrayList<>(IntStream.rangeClosed(1, maxTaskCount).boxed().toList());
@@ -136,7 +144,7 @@ public class Parser {
 
         Set<Integer> indices = new TreeSet<>();
 
-        for (String token : arguments.split(" ")) {
+        for (String token : arguments.split("\\s+")) {
             indices.addAll(parseToken(token, maxTaskCount));
         }
 
