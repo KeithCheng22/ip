@@ -25,7 +25,7 @@ public class MainWindow extends AnchorPane {
     private Keef keef;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image keefImage = new Image(this.getClass().getResourceAsStream("/images/DaKeef.png"));
 
     /** Initializes Keef's welcome message */
     @FXML
@@ -33,7 +33,7 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         Ui ui = new Ui();
         dialogContainer.getChildren().addAll(
-                DialogBox.getKeefDialog(ui.showWelcome(), dukeImage)
+                DialogBox.getKeefDialog(ui.showWelcome(), keefImage)
         );
     }
 
@@ -59,7 +59,7 @@ public class MainWindow extends AnchorPane {
         String response = keef.getResponse(input, stage);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getKeefDialog(response, dukeImage)
+                DialogBox.getKeefDialog(response, keefImage)
         );
 
         userInput.clear();

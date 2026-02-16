@@ -16,13 +16,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            stage.setTitle("Keef ChatBot");
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
-            fxmlLoader.<MainWindow>getController().setKeef(keef); // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setKeef(keef); // inject the Keef instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
