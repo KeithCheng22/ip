@@ -69,28 +69,40 @@ Keef will immediately close the application.
 ### list
 Displays all current tasks in your list, including their status and type.
 * **Format:** `list`
+
+<p>
 <img width="419" height="246" alt="Screenshot 2026-02-19 at 3 24 17 PM" src="https://github.com/user-attachments/assets/50a6dacb-43ed-4050-b4c9-0ecb4df90c53" />
+</p>
 
 <a name="todo"></a>
 ### todo
 Adds a basic task without any specific date or time.
 * **Format:** `todo <description>`
 * **Example:** `todo laundry`
+
+<p>
 <img width="419" height="242" alt="Screenshot 2026-02-19 at 3 23 22 PM" src="https://github.com/user-attachments/assets/cb67def5-fe5d-4bf8-9575-9657ca9922ef" />
+</p>
 
 <a name="deadline"></a>
 ### deadline
 Adds a task that needs to be done by a specific date and time.
 * **Format:** `deadline <description> /by <dd/MM/yyyy HHmm>`
 * **Example:** `deadline MA2202 Homework 2 /by 20/12/2026 1830`
+
+<p>
 <img width="418" height="239" alt="Screenshot 2026-02-19 at 3 24 44 PM" src="https://github.com/user-attachments/assets/61b1eab0-d960-4c05-9217-1ae46c3174b3" />
+</p>
 
 <a name="event"></a>
 ### event
 Adds a task that occurs within a specific time frame.
 * **Format:** `event <description> /from <dd/MM/yyyy HHmm> /to <dd/MM/yyyy HHmm>`
 * **Example:** `event CS2103T project meeting /from 20/12/2026 1830 /to 20/12/2026 2030`
+
+<p>
 <img width="417" height="238" alt="Screenshot 2026-02-19 at 3 27 01 PM" src="https://github.com/user-attachments/assets/6c7923a0-5a7d-4b6e-8850-1e5afe293cde" />
+</p>
 
 <a name="delete"></a>
 ### delete
@@ -101,7 +113,10 @@ Removes task(s) from the list using their 1-based index numbers.
   - **Multiple tasks:** `delete 1 3 5`  
   - **Range of tasks:** `delete 2-5`  
   - **All tasks:** `delete all`
+
+<p>
 <img width="418" height="243" alt="Screenshot 2026-02-19 at 3 28 28 PM" src="https://github.com/user-attachments/assets/a0865e3a-b33b-439f-871b-1c8df5759c1d" />
+</p>
 
 <a name="mark"></a>
 ### mark
@@ -112,7 +127,10 @@ Marks a specific task as completed.
   - **Multiple tasks:** `mark 1 3 5`  
   - **Range of tasks:** `mark 2-5`  
   - **All tasks:** `mark all`
+
+<p>
 <img width="418" height="245" alt="Screenshot 2026-02-19 at 3 27 40 PM" src="https://github.com/user-attachments/assets/f5c89e66-2d82-4e34-8edc-986dc9a9b678" />
+</p>
 
 <a name="unmark"></a>
 ### unmark
@@ -123,14 +141,20 @@ Reverts a completed task back to "not done".
   - **Multiple tasks:** `mark 1 3 5`  
   - **Range of tasks:** `mark 2-5`  
   - **All tasks:** `mark all`
+
+<p>
 <img width="417" height="239" alt="Screenshot 2026-02-19 at 3 27 57 PM" src="https://github.com/user-attachments/assets/43ef4ac5-6862-4f5c-9673-eb8f931c764e" />
+</p>
 
 <a name="find"></a>
 ### find
 Searches for tasks that contain the specified keyword in their description.
 * **Format:** `find <keyword>`
 * **Example:** `find CS`
+
+<p>
 <img width="418" height="244" alt="Screenshot 2026-02-19 at 3 28 13 PM" src="https://github.com/user-attachments/assets/fdab59b4-8ee0-41c5-ab4b-ed5d4b9e6879" />
+</p>
 
 #### Usage Notes:
 * Index Range: The index must be a positive integer within the range of the current list, and applies to the `delete`, `mark` and `unmark` commands (e.g., if you have 5 tasks, delete 6 will fail).
