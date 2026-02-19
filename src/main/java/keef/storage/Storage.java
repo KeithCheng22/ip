@@ -80,13 +80,13 @@ public class Storage {
             }
             case "D" -> {
                 assert parts.length == 4 : "Deadline should have exactly 4 fields";
-                yield new Deadline(parts[2], LocalDateTime.parse(parts[3]));
+                yield new Deadline(parts[2], LocalDateTime.parse(parts[3], Task.STORAGE_FORMAT));
             }
             case "E" -> {
                 assert parts.length == 5 : "Event should have exactly 5 fields";
                 yield new Event(parts[2],
-                        LocalDateTime.parse(parts[3]),
-                        LocalDateTime.parse(parts[4]));
+                        LocalDateTime.parse(parts[3], Task.STORAGE_FORMAT),
+                        LocalDateTime.parse(parts[4], Task.STORAGE_FORMAT));
             }
             default -> null;
             //CHECKSTYLE.ON: Indentation

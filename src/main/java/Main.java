@@ -11,7 +11,7 @@ import keef.Keef;
  */
 public class Main extends Application {
 
-    private Keef keef = new Keef("./data/keef.txt");
+    private final Keef keef = new Keef("./data/keef.txt");
 
     @Override
     public void start(Stage stage) {
