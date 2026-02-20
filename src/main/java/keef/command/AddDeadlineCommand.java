@@ -54,7 +54,7 @@ public class AddDeadlineCommand extends Command {
         try {
             by = LocalDateTime.parse(dateString, Task.STORAGE_FORMAT);
         } catch (Exception e) {
-            throw new KeefException("Use date format: d/M/yyyy HHmm");
+            throw new KeefException("Use date format: dd/MM/yyyy HHmm");
         }
 
         Task deadlineTask = new Deadline(description, by);

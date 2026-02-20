@@ -43,8 +43,13 @@ public class AddEventCommand extends Command {
         }
 
         String[] parts = arguments.split("/from|/to");
+        int fromIndex = arguments.indexOf("/from");
+        int toIndex = arguments.indexOf("/to");
+
         if (parts.length < 3) {
-            throw new KeefException("Bro, the event description, start, and end cannot be empty!");
+            throw new KeefException("Bro, the event <description>, <start>, and <end> cannot be empty!");
+        } else if (fromIndex > toIndex) {
+            throw new KeefException("Use format: event <description> /from <start> /to <end>");
         }
 
         String description = parts[0].trim();
@@ -52,7 +57,7 @@ public class AddEventCommand extends Command {
         String dateToString = parts[2].trim();
 
         if (description.isEmpty() || dateFromString.isEmpty() || dateToString.isEmpty()) {
-            throw new KeefException("Bro, the event description, start, and end cannot be empty!");
+            throw new KeefException("Bro, the event <description>, <start>, and <end> cannot be empty!");
         }
 
         LocalDateTime from;
@@ -61,7 +66,11 @@ public class AddEventCommand extends Command {
             from = LocalDateTime.parse(dateFromString, Task.STORAGE_FORMAT);
             to = LocalDateTime.parse(dateToString, Task.STORAGE_FORMAT);
         } catch (Exception e) {
-            throw new KeefException("Use date format: d/M/yyyy HHmm");
+            throw new KeefException("Use date format: dd/MM/yyyy HHmm HHmm");
+        }
+
+        if (from.isAfter(to)) {
+            throw new KeefException("Start date/time cannot be later than end date/time.");
         }
 
         Task eventTask = new Event(description, from, to);

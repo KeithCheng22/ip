@@ -10,7 +10,12 @@ The chatbot has a chill personality, and supports the following features:
 5. Batch operations (eg. deleting / marking / unmarking multiple tasks)
 
 **Getting Started**
-
+1. Download the latest `Keef.jar`.
+2. Run it: 
+    ```
+    java -jar keef.jar
+    ```
+   
 Upon bootup, Keef will send a greeting message. The user may then interact with the chatbot via some specific commands.
 
 <p>
@@ -150,7 +155,7 @@ Reverts a completed task back to "not done".
 ### find
 Searches for tasks that contain the specified keyword in their description.
 * **Format:** `find <keyword>`
-* **Example:** `find CS`
+* **Example:** `find cs`
 
 <p>
 <img width="418" height="244" alt="Screenshot 2026-02-19 at 3 28 13 PM" src="https://github.com/user-attachments/assets/fdab59b4-8ee0-41c5-ab4b-ed5d4b9e6879" />
@@ -165,7 +170,7 @@ You don't need to manually save your progress.
 Keef automatically saves your state every time you add, delete, mark, unmark a task.
 
 ### Storage Location
-When you run the application, Keef creates a `/data` folder in the same directory as your `.jar` file. Your data is placed into a  **`keef.txt`** file
+When you run the application, Keef creates a `/data` folder in the same directory as your `.jar` file only when a task has been added. Your data is placed into a  **`keef.txt`** file.
 
 ### File Structure
 ```text
@@ -187,13 +192,15 @@ If you provide an invalid input, Keef will let you know.
 
 Refer to the table below to fix common issues:
 
-| Issue | Typical Error Message | How to Fix                                                     |
-| :--- | :--- |:---------------------------------------------------------------|
-| **Invalid Command** | "Huh, what do you mean?" | Command is invalid. Refer to the list of valid commands.        |
-| **Empty Todo Description** | "Bro, you left out what exactly you wanted to do! Add something!" | Ensure text follows the command (e.g., `todo laundry`).   |
-| **Empty Deadline Description** | "Bro, the description and date can't be empty!" | Ensure text follows the command (e.g., `deadline MA2202 Homework 2 /by 20/12/2026 1830`).   |
-| **Empty Deadline Description** | "Bro, the event description, start and end date cannot be empty!" | Ensure text follows the command (e.g., `event CS2103T meeting /from 17/2/2026 1400 /to 18/2/2026 1600`).   |
-| **Missing Tag For Deadlines** | "Bro, you must include /by <date>" | Include the mandatory prefix for deadlines.         |
-| **Missing Tag For Events** | "Bro, you must include /from <start> and /to <end>" | Include the mandatory prefix for events.         |
-| **Invalid Index** | "Uhm bro, you only have x task(s) in your list." | Use a number corresponding to an existing item in your `list`. |
-| **Wrong Date Format** | "Use date format: d/M/yyy HHmm" | Use the **dd/MM/yyyy HHmm** format.       |
+| Issue                          | Typical Error Message                                             | How to Fix                                                                                               |
+|:-------------------------------|:------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------|
+| **Invalid Command**            | "Huh, what do you mean?"                                          | Command is invalid. Refer to the list of valid commands.                                                 |
+| **Empty Todo Description**     | "Bro, you left out what exactly you wanted to do! Add something!" | Ensure text follows the command (e.g., `todo laundry`).                                                  |
+| **Empty Deadline Description** | "Bro, the description and date can't be empty!"                   | Ensure text follows the command (e.g., `deadline MA2202 Homework 2 /by 20/12/2026 1830`).                |
+| **Empty Event Description**    | "Bro, the event description, start and end date cannot be empty!" | Ensure text follows the command (e.g., `event CS2103T meeting /from 17/2/2026 1400 /to 18/2/2026 1600`). |
+| **Incorrect Event Tag Order**  | "Use format: event <description> /from <start> /to <end>" | Ensure text uses /from, then /to.                                                                        |
+| **Incorrect Event Tag Times**  | "Start date/time cannot be later than end date/time." | Ensure the date/time of /from occurs before the date/time of /to.                                        |
+| **Missing Tag For Deadlines**  | "Bro, you must include /by <date>"                                | Include the mandatory prefix for deadlines.                                                              |
+| **Missing Tag For Events**     | "Bro, you must include /from <start> and /to <end>"               | Include the mandatory prefix for events.                                                                 |
+| **Invalid Index**              | "Uhm bro, you only have x task(s) in your list."                  | Use a number corresponding to an existing item in your `list`.                                           |
+| **Wrong Date Format**          | "Use date format: dd/MM/yyy HHmm"                                 | Use the **dd/MM/yyyy HHmm** format.                                                                      |
